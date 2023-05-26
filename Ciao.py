@@ -1,1 +1,2 @@
 print("Ciao!")
+print("Ciao!")
