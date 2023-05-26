@@ -27,3 +27,5 @@ table con gli ultimi 5 movimenti.
 - Index.php: vieni reinderizzato in questa pagina quando fai l’accesso correttamente.
 Viene messo il nome utente, data apertura del conto corrente, il saldo e una table con
 gli ultimi 5 movimenti
+
+- footer e header vanno messi su ogni pagina separatamente
