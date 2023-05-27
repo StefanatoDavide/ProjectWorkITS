@@ -10,7 +10,7 @@
     <title>Login</title>
 </head>
 <body>
-    <header>Ricerca   |   Account   |   Funzionalità</header>
+    <header class="container-fluid">Ricerca   |   Account   |   Funzionalità</header>
     <div class="container-fluid">
         <?php
             //                   server      utente               password        database
