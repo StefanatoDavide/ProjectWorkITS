@@ -1,7 +1,8 @@
 <?php
     error_reporting(0);
     session_start();
-    
+    $isok1=false;
+    $isok2=false;
     //funzione per ottenere l'indirizzo pubblico dell'host
     function getPublicIP() {
         $curl = curl_init();
@@ -16,73 +17,38 @@
 
     if (isset($_SESSION["locked"]))
     {
+
+        /*function setInterval($f, $milliseconds)
+        {
+            $seconds=(int)$milliseconds/1000;
+            while(true)
+            {
+                $f();
+                sleep($seconds);
+            }
+        }       
         $difference = time() - $_SESSION["locked"];
-        if ($difference > 5)
+        if ($difference >=60)
         {
             unset($_SESSION["locked"]);
             unset($_SESSION["login_attempts"]);
-        }
+            $curpage = $_SERVER["PHP_SELF"];
+        }*/
     }
 
     if (isset($_REQUEST["Invio"]))
     {
+        $isok1=true;
         $email =trim(htmlspecialchars($_POST["email"]));
         $password =trim(htmlspecialchars($_POST["password"]));
         $hash = password_hash($password,PASSWORD_DEFAULT);
 
-        $conn = mysqli_connect("localhost", "root", "", "projectworkits");
-        $result = $conn->prepare("select * from tconticorrenti WHERE email = ?  AND password = ? ");
-        $result->bind_param("ss",$email,$hash);
-        $result->execute();
-        $dati=$result->get_result();
-        $ip=getPublicIP();
+    }
 
-        if (mysqli_num_rows($dati) > 0)
-        {
-            date_default_timezone_set("Europe/Rome");
-            $date= date("Y-m-d h:i:sa");
-            $valido=1;
-            $queryInsert=$conn->prepare("insert into taccessi (IndirizzoIP, DataOra, ValiditaAccesso) VALUES ( ?, ?, ?)");
-            $queryInsert->bind_param("ssi",$ip,$date,$valido);
-            if($queryInsert->execute()){
-                //header("Location: index.php");
-                header("Location: https://stackoverflow.com");
-            }
-            else{
-                echo("<script>document.getElementById('errore').style.display='block'; document.getElementById('errore').innerHTML='';document.getElementById('errore').innerHTML='Errore generico';</script>");
-            }
-           $queryInsert->close();
-
-        }
-        else
-            {
-            date_default_timezone_set("Europe/Rome");
-            $date= date("Y-m-d h:i:sa");
-            
-            $valido=0;
-           
-            $queryInsert=$conn->prepare("insert into taccessi (IndirizzoIP, DataOra, ValiditaAccesso) VALUES (?, ?, ?)");
-            $queryInsert->bind_param("ssi",$ip,$date,$valido);
-            if($queryInsert->execute()){
-                echo("<script>document.getElementById('errore').style.display='block'; document.getElementById('errore').innerHTML='';document.getElementById('errore').innerHTML='Inserimento errato';</script>");
-                //header("Location: index.php");
-            }
-            else{
-                echo("<script>document.getElementById('errore').style.display='block'; document.getElementById('errore').innerHTML='';document.getElementById('errore').innerHTML='Errore generico';</script>");
-            }
-
-
-            
-            if (isset($_SESSION["login_attempts"])) {
-                $_SESSION["login_attempts"] += 1; 
-            }else{
-                $_SESSION["login_attempts"] = 0;
-            }
-            
-            $queryInsert->close();
-        }
-        mysqli_close($conn);
-        unset($_REQUEST["Invio"]);
+    if(isset($_REQUEST["Login"]))
+    {
+        $isok2=true;
+        //$_SESSION[""]
     }
    
     
@@ -99,6 +65,9 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
 <style>
     #errore{
+        display:none;
+    }
+    #info{
         display:none;
     }
     #demo{
@@ -143,22 +112,125 @@
 
         <div>
             <p id="errore"></p>
+            <p id="info"></p>
         </div>
         <div >
             <?php
                 if ($_SESSION["login_attempts"] >= 3) {
                     $_SESSION["locked"] = time();
+                    
                     echo "<p>Hai superato il limite di tentativi aspetta 1 minuto e ritenta</p>";
+                    setInterval(1000);
+                    
                 } else {
             ?>
                 <input name="Invio" type="submit" value="Accedi">
             <?php } ?>
         </div>
     </form>
+    <?php
+        if($isok){
+            echo('<form method="post" action="">');
+            echo("<label for='lCodice'>Inserisci il codice ricevuto via mail</label>");
+            echo("<input type='text' name='codiceConferma' id='lCodice' autocomplete='off' placeholder='codice' required>");
+            echo("<input type='submit' name='Login' value='Login'>");
+
+            echo("</form>");
+        }
+    ?>
 </div>
 <p id="paragrafoCount">Countdown: <span id="countdown"></span> secondi</p>
-
 </body>
+
+<?php
+    if($isok1){
+        $conn = mysqli_connect("localhost", "root", "", "projectworkits");
+        $result = $conn->prepare("select * from tconticorrenti WHERE email = ?  AND password = ? ");
+        $result->bind_param("ss",$email,$hash);
+        $result->execute();
+        $dati=$result->get_result();
+        $ip=getPublicIP();
+
+        if (mysqli_num_rows($dati) > 0)
+        {
+            echo("<script>document.getElementById('info').style.display='block'; document.getElementById('info').innerHTML='';document.getElementById('info').innerHTML='Inserire il codice inviato tramite mail nel campo sottostante.';</script>");
+            date_default_timezone_set("Europe/Rome");
+            $date= date("Y-m-d h:i:sa");
+            $valido=1;
+            $queryInsert=$conn->prepare("insert into taccessi (IndirizzoIP, DataOra, ValiditaAccesso) VALUES ( ?, ?, ?)");
+            $queryInsert->bind_param("ssi",$ip,$date,$valido);
+            if($queryInsert->execute()){
+                $isok=true;
+                $object="Conferma registrazione";
+                $header="From: zion.holdingcompanyita@gmail.com";
+                $head = "MIME-Version: 1.0\r\n";
+                $head .= "Content-type: text/html; charset=utf-8";
+                $html=file_get_contents("email_template.html");
+                $html = str_replace("{NOME}", $nome, $html);
+                $html = str_replace("{COGNOME}", $cognome, $html);
+                $html = str_replace("{TOKEN}", $token, $html);
+                
+                
+                if(!mail($mail,$object,$html,$head))
+                {
+                    echo("<script>document.getElementById('errore').style.display='block';document.getElementById('errore').innerHTML='';document.getElementById('errore').innerHTML='Si è verificato un errore durante l'invio della mail. Si prega di riprovare.';</script>");
+                }
+            }
+            else{
+                echo("<script>document.getElementById('errore').style.display='block'; document.getElementById('errore').innerHTML='';document.getElementById('errore').innerHTML='Errore generico';</script>");
+            }
+        $queryInsert->close();
+
+        }
+        else
+        {
+            date_default_timezone_set("Europe/Rome");
+            $date= date("Y-m-d h:i:sa");
+            
+            $valido=0;
+        
+            $queryInsert=$conn->prepare("insert into taccessi (IndirizzoIP, DataOra, ValiditaAccesso) VALUES (?, ?, ?)");
+            $queryInsert->bind_param("ssi",$ip,$date,$valido);
+            if($queryInsert->execute()){
+                echo("<script>document.getElementById('errore').style.display='block'; document.getElementById('errore').innerHTML='';document.getElementById('errore').innerHTML='Inserimento errato';</script>");
+                //header("Location: index.php");
+            }
+            else{
+                echo("<script>document.getElementById('errore').style.display='block'; document.getElementById('errore').innerHTML='';document.getElementById('errore').innerHTML='Errore generico';</script>");
+            }
+
+
+            
+            if (isset($_SESSION["login_attempts"])) {
+                $_SESSION["login_attempts"] += 1; 
+            }else{
+                $_SESSION["login_attempts"] = 1;
+            }
+            
+            $queryInsert->close();
+        }
+        mysqli_close($conn);
+        unset($_REQUEST["Invio"]);
+    }
+    function setInterval($milliseconds)
+    {       $int=1;
+            $seconds=(int)$milliseconds/1000;
+            while(true)
+            {
+                $difference = time() - $_SESSION["locked"];
+                echo($int);
+                if ($difference >=10)
+                {   
+                    
+                    unset($_SESSION["locked"]);
+                    unset($_SESSION["login_attempts"]);
+                    $curpage = $_SERVER["PHP_SELF"];
+                    break;
+                }
+                sleep($seconds);
+            }
+    }
+?>
 <script>
     function Controllo(){
         let email = document.getElementById("email").value;
