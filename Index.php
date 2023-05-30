@@ -20,15 +20,22 @@
             }
             return true;
         }
+
         function CercaUltimi() {
             ricercaString = FormRicercaUltimi.intRicerca.value;
-            if isOnlyDigits(ricercaString)==FALSE {
+            if (isOnlyDigits(ricercaString)==FALSE) {
                 return;
             }
-            if ricercaString.include("-") {
+            if (ricercaString.include("-")) {
                 return;
             }
             FormRicercaUltimi.submit();
+        }
+        
+        function CercaData(){
+            daString = FormRicercaData.IDda.value;
+            aString = FormRicercaData.IDa.value;
+            FormRicercaData.submit();
         }
     </script>
 </head>
@@ -59,16 +66,22 @@
                             Ricerca ultimi movimenti
                         </a>
                         <div class="dropdown-menu">
-                            <form class= "form-inline" name= "FormRicercaUltimi" action="" method="post">
+
+                            <form class= "form-inline" name= "FormRicercaUltimi" action="" method="get">
                                 <input class="form-control" type="number" id ="intRicerca" name="IntUltimi" placeholder="Trova ultimi X movimenti">
                                 <button class="btn btn-success btn-block " type="submit" onclick="CercaUltimi()">Cerca</button>
                             </form>
                             <?php
-                                $intRicercaUltimi = $_POST['IntUltimi'];
-                                if (empty($intRicercaUltimi) ==false){
-                                    header("Location: http://localhost/Projectworkits/Ricerche/RicercaMovimenti1.php?ID='$intRicercaUltimi'");
+                                if(isset($_GET['IntUltimi'])){
+                                    $intRicercaUltimi = $_GET['IntUltimi'];
+                                    $url = "http://localhost/Projectworkits/Ricerche/RicercaMovimenti1.php?ID=".$intRicercaUltimi;
+                                    
+                                    if (empty($intRicercaUltimi) ==false){
+                                        header("Location: ".$url);
+                                    }
                                 }
                             ?>
+
                         </div>
                     </li>
                     <li class="nav-item dropdown">
@@ -76,18 +89,18 @@
                             Ricerca per tipologia movimenti
                         </a>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#">Bonifico Entrata</a>
-                            <a class="dropdown-item" href="#">Versamento Bancomat</a>	
-                            <a class="dropdown-item" href="#">Bonifico Uscita</a>
-                            <a class="dropdown-item" href="#">Prelievo Contanti</a>
-                            <a class="dropdown-item" href="#">Pagamento Utenze</a>
-                            <a class="dropdown-item" href="#">Ricarica Telefonica</a>	
-                            <a class="dropdown-item" href="#">Pagamento Bollette</a>	
-                            <a class="dropdown-item" href="#">Pagamento F24</a>
-                            <a class="dropdown-item" href="#">Bollettino Postale</a>	
-                            <a class="dropdown-item" href="#">Ricarica Carta Prepagata</a>
-                            <a class="dropdown-item" href="#">Bollo Auto</a>
-                            <a class="dropdown-item" href="#">Accredito Stipendio</a>
+                            <a class="dropdown-item" href="http://localhost/Projectworkits/Ricerche/RicercaMovimenti2.php?ID=2">Bonifico Entrata</a>
+                            <a class="dropdown-item" href="http://localhost/Projectworkits/Ricerche/RicercaMovimenti2.php?ID=3">Versamento Bancomat</a>	
+                            <a class="dropdown-item" href="http://localhost/Projectworkits/Ricerche/RicercaMovimenti2.php?ID=4">Bonifico Uscita</a>
+                            <a class="dropdown-item" href="http://localhost/Projectworkits/Ricerche/RicercaMovimenti2.php?ID=5">Prelievo Contanti</a>
+                            <a class="dropdown-item" href="http://localhost/Projectworkits/Ricerche/RicercaMovimenti2.php?ID=6">Pagamento Utenze</a>
+                            <a class="dropdown-item" href="http://localhost/Projectworkits/Ricerche/RicercaMovimenti2.php?ID=7">Ricarica Telefonica</a>	
+                            <a class="dropdown-item" href="http://localhost/Projectworkits/Ricerche/RicercaMovimenti2.php?ID=8">Pagamento Bollette</a>	
+                            <a class="dropdown-item" href="http://localhost/Projectworkits/Ricerche/RicercaMovimenti2.php?ID=9">Pagamento F24</a>
+                            <a class="dropdown-item" href="http://localhost/Projectworkits/Ricerche/RicercaMovimenti2.php?ID=10">Bollettino Postale</a>	
+                            <a class="dropdown-item" href="http://localhost/Projectworkits/Ricerche/RicercaMovimenti2.php?ID=11">Ricarica Carta Prepagata</a>
+                            <a class="dropdown-item" href="http://localhost/Projectworkits/Ricerche/RicercaMovimenti2.php?ID=12">Bollo Auto</a>
+                            <a class="dropdown-item" href="http://localhost/Projectworkits/Ricerche/RicercaMovimenti2.php?ID=13">Accredito Stipendio</a>
                         </div>
                     </li>
                     <li class="nav-item dropdown">
@@ -95,16 +108,34 @@
                             Ricerca per data movimento
                         </a>
                         <div class="dropdown-menu">
-                            <form class="form-inline needs-validation " action=Cerca()>
+                            <form class="form-inline needs-validation" name= "FormRicercaData" method="get" action="http://localhost/Projectworkits/Ricerche/RicercaMovimenti3.php">
                                 <div class="form-group mx-auto ">
                                     <label for="da" class="mr-sm-2">Da:  </label>
-                                    <input class="form-control  " type="date" id="da">
+                                    <input class="form-control  " type="date" id = "IDda" name="Datada">
                                 </div> </br>
                                 <div class="form-group mx-auto ">
                                     <label for="a" class="mr-sm-2">A:</label>
-                                    <input class="form-control " type="date" id="a">
+                                    <input class="form-control " type="date" id = "IDa" name="DataA">
                                 </div>
-                                <button class="btn btn-success btn-block " type="submit">Cerca</button>
+                                <button class="btn btn-success btn-block " type="submit" >Cerca</button>
+
+                                <?php
+                                
+                                if(isset($_GET['Datada']) && isset($_GET["DataA"])){
+                                    
+                                    $data1 = $_GET['Datada'];
+                                    $data2 = $_GET['DataA'];
+                                    $url = "http://localhost/Projectworkits/Ricerche/RicercaMovimenti3.php?DA=".$data1."&A=".$data2;
+                                    
+                                    
+                                    if (empty($data1) ==false){
+                                        echo '<script>alert("Alert2")</script>';
+                                        header("Location: http://localhost/Projectworkits/Ricerche/RicercaMovimenti3.php");
+                                    }else{
+                                        
+                                    }                                        
+                                }
+                                ?>
                             </form>
                         </div>
                     </li>
@@ -125,20 +156,23 @@
         <?php
             //                   server      utente               password        database
             $conn=mysqli_connect("localhost", "root", "", "projectworkits");
-            $strSQL="select * from tmovimenticontocorrente";
+            $strSQL="SELECT * FROM `tconticorrenti` WHERE `ContoCorrenteID`=1";
             $query=mysqli_query($conn, $strSQL);
             $row = mysqli_fetch_assoc($query);
+
+            $strSQL2="SELECT * FROM `tmovimenticontocorrente` WHERE `ContoCorrenteID`=1 ORDER BY `MovimentoID` DESC LIMIT 1";
+            $query2=mysqli_query($conn, $strSQL2);
+            $row2 = mysqli_fetch_assoc($query2);
 
             if (!$conn) {
                 die("Connessione al database fallita: " . mysqli_connect_error());
                 }
             
-            //chiudo connessione
-            mysqli_close($conn);
+           
+            echo("<h1>".$row['NomeTitolare']." ".$row['CognomeTitolare']."</h1><p>Conto aperto in data: ".$row['DataApertura']."</p><h3>Saldo:".$row2["Saldo"]."€</h3>");
+
+        
         ?>
-        <h1>Nome Utente</h1>
-        <p>Data Conto Corrente</p>
-        <h3>Saldo: 1000$</h3>
     </div>
     <div class="container-fluid" > 
         <h2>Ultimi movimenti</h2>
@@ -148,16 +182,26 @@
                     <th>Destinatario Transazione</th>
                     <th>Data</th>
                     <th>Importo</th>
-                    <th>Dettaglio Movimento</th>
+                    <th>#</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td><strong>John</strong></td>
-                    <td>12/03/2023</td>
-                    <td>+15.00€</td>
-                    <td><a>Dettagli</a></td>
-                </tr>
+                <?php
+                    $strSQL="SELECT * FROM `tmovimenticontocorrente` WHERE `ContoCorrenteID` = 1 ORDER BY `MovimentoID` DESC LIMIT 5";
+                    $query=mysqli_query($conn, $strSQL);
+                    while ($row = mysqli_fetch_assoc($query)) 
+                    {
+                        $dettaglio = "http://localhost/Projectworkits/DettaglioMovimento.php?ID=".$row["MovimentoID"];
+                        echo("<tr>");
+                        echo("<td><strong>".$row["DescrizioneEstesa"]."</strong></td>");
+                        echo("<td>".$row["Data"]."</td>");
+                        echo("<td>".$row["Importo"]."€</td>");
+                        echo("<td><a href='$dettaglio'>Dettagli</a></td>");
+                        echo("</tr>");
+                    }
+                    //chiudo connessione
+                    mysqli_close($conn);
+                ?>
             </tbody>
         </table>
     </div>

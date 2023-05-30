@@ -7,6 +7,8 @@
     <title>Dettaglio Movimento</title>
 </head>
 <body>
-    
+    <?php
+        echo($_GET["ID"]);
+    ?>
 </body>
 </html>
