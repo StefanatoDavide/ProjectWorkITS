@@ -180,7 +180,7 @@
             <thead>
                 <tr>
                     <th>Destinatario Transazione</th>
-                    <th>Data</th>
+                    <th>Data <small class ="text-secondary">(YYYY/MM/DD)</small></th>
                     <th>Importo</th>
                     <th>#</th>
                 </tr>
@@ -196,7 +196,7 @@
                         echo("<td><strong>".$row["DescrizioneEstesa"]."</strong></td>");
                         echo("<td>".$row["Data"]."</td>");
                         echo("<td>".$row["Importo"]."€</td>");
-                        echo("<td><a href='$dettaglio'>Dettagli</a></td>");
+                        echo("<td><a href='$dettaglio' class='text-info'>Dettagli</a></td>");
                         echo("</tr>");
                     }
                     //chiudo connessione
