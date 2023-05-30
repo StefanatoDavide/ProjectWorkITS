@@ -9,6 +9,8 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
     <title>Login</title>
+    
+    
 
     <script>
         function isOnlyDigits(string) {
@@ -114,7 +116,7 @@
                                     <input class="form-control  " type="date" id = "IDda" name="Datada">
                                 </div> </br>
                                 <div class="form-group mx-auto ">
-                                    <label for="a" class="mr-sm-2">A:</label>
+                                    <label for="a" class="mr-sm-2"> A:</label>
                                     <input class="form-control " type="date" id = "IDa" name="DataA">
                                 </div>
                                 <button class="btn btn-success btn-block " type="submit" >Cerca</button>
@@ -129,7 +131,6 @@
                                     
                                     
                                     if (empty($data1) ==false){
-                                        echo '<script>alert("Alert2")</script>';
                                         header("Location: http://localhost/Projectworkits/Ricerche/RicercaMovimenti3.php");
                                     }else{
                                         
