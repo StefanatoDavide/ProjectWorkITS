@@ -32,7 +32,7 @@ $userID=2;
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "projectworkits1";
+$dbname = "projectworkits";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
