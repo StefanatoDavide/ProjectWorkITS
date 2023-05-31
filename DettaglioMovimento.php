@@ -151,9 +151,9 @@
             </div>
         </nav>
     </header>  
-    
+    </br>
     <div class="container-fluid">
-    <h2 >Dettagli transazione</h2>
+    <h2 >Dettagli transazione</h2></br>
         <table class="table table-bordered ">
         <?php
             $movimento = $_GET["ID"];

@@ -9,6 +9,8 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
     <title>Login</title>
+    
+    
 
     <script>
         function isOnlyDigits(string) {
@@ -74,7 +76,7 @@
                             <?php
                                 if(isset($_GET['IntUltimi'])){
                                     $intRicercaUltimi = $_GET['IntUltimi'];
-                                    $url = "http://localhost/Projectworkits/Ricerche/RicercaMovimenti1.php?NumeroMovimenti=".$intRicercaUltimi;
+                                    $url = "http://localhost/Projectworkits/Ricerche/RicercaMovimenti1.php?ID=".$intRicercaUltimi;
                                     
                                     if (empty($intRicercaUltimi) ==false){
                                         header("Location: ".$url);
@@ -89,19 +91,18 @@
                             Ricerca per tipologia movimenti
                         </a>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="http://localhost/Projectworkits/Ricerche/RicercaMovimenti2.php?Categoria=1">Apertura</a>
-                            <a class="dropdown-item" href="http://localhost/Projectworkits/Ricerche/RicercaMovimenti2.php?Categoria=2">Bonifico Entrata</a>
-                            <a class="dropdown-item" href="http://localhost/Projectworkits/Ricerche/RicercaMovimenti2.php?Categoria=3">Versamento Bancomat</a>	
-                            <a class="dropdown-item" href="http://localhost/Projectworkits/Ricerche/RicercaMovimenti2.php?Categoria=4">Bonifico Uscita</a>
-                            <a class="dropdown-item" href="http://localhost/Projectworkits/Ricerche/RicercaMovimenti2.php?Categoria=5">Prelievo Contanti</a>
-                            <a class="dropdown-item" href="http://localhost/Projectworkits/Ricerche/RicercaMovimenti2.php?Categoria=6">Pagamento Utenze</a>
-                            <a class="dropdown-item" href="http://localhost/Projectworkits/Ricerche/RicercaMovimenti2.php?Categoria=7">Ricarica Telefonica</a>	
-                            <a class="dropdown-item" href="http://localhost/Projectworkits/Ricerche/RicercaMovimenti2.php?Categoria=8">Pagamento Bollette</a>	
-                            <a class="dropdown-item" href="http://localhost/Projectworkits/Ricerche/RicercaMovimenti2.php?Categoria=9">Pagamento F24</a>
-                            <a class="dropdown-item" href="http://localhost/Projectworkits/Ricerche/RicercaMovimenti2.php?Categoria=10">Bollettino Postale</a>	
-                            <a class="dropdown-item" href="http://localhost/Projectworkits/Ricerche/RicercaMovimenti2.php?Categoria=11">Ricarica Carta Prepagata</a>
-                            <a class="dropdown-item" href="http://localhost/Projectworkits/Ricerche/RicercaMovimenti2.php?Categoria=12">Bollo Auto</a>
-                            <a class="dropdown-item" href="http://localhost/Projectworkits/Ricerche/RicercaMovimenti2.php?Categoria=13">Accredito Stipendio</a>
+                            <a class="dropdown-item" href="http://localhost/Projectworkits/Ricerche/RicercaMovimenti2.php?ID=2">Bonifico Entrata</a>
+                            <a class="dropdown-item" href="http://localhost/Projectworkits/Ricerche/RicercaMovimenti2.php?ID=3">Versamento Bancomat</a>	
+                            <a class="dropdown-item" href="http://localhost/Projectworkits/Ricerche/RicercaMovimenti2.php?ID=4">Bonifico Uscita</a>
+                            <a class="dropdown-item" href="http://localhost/Projectworkits/Ricerche/RicercaMovimenti2.php?ID=5">Prelievo Contanti</a>
+                            <a class="dropdown-item" href="http://localhost/Projectworkits/Ricerche/RicercaMovimenti2.php?ID=6">Pagamento Utenze</a>
+                            <a class="dropdown-item" href="http://localhost/Projectworkits/Ricerche/RicercaMovimenti2.php?ID=7">Ricarica Telefonica</a>	
+                            <a class="dropdown-item" href="http://localhost/Projectworkits/Ricerche/RicercaMovimenti2.php?ID=8">Pagamento Bollette</a>	
+                            <a class="dropdown-item" href="http://localhost/Projectworkits/Ricerche/RicercaMovimenti2.php?ID=9">Pagamento F24</a>
+                            <a class="dropdown-item" href="http://localhost/Projectworkits/Ricerche/RicercaMovimenti2.php?ID=10">Bollettino Postale</a>	
+                            <a class="dropdown-item" href="http://localhost/Projectworkits/Ricerche/RicercaMovimenti2.php?ID=11">Ricarica Carta Prepagata</a>
+                            <a class="dropdown-item" href="http://localhost/Projectworkits/Ricerche/RicercaMovimenti2.php?ID=12">Bollo Auto</a>
+                            <a class="dropdown-item" href="http://localhost/Projectworkits/Ricerche/RicercaMovimenti2.php?ID=13">Accredito Stipendio</a>
                         </div>
                     </li>
                     <li class="nav-item dropdown">
@@ -115,7 +116,7 @@
                                     <input class="form-control  " type="date" id = "IDda" name="Datada">
                                 </div> </br>
                                 <div class="form-group mx-auto ">
-                                    <label for="a" class="mr-sm-2">A:</label>
+                                    <label for="a" class="mr-sm-2"> A:</label>
                                     <input class="form-control " type="date" id = "IDa" name="DataA">
                                 </div>
                                 <button class="btn btn-success btn-block " type="submit" >Cerca</button>
@@ -129,9 +130,11 @@
                                     $url = "http://localhost/Projectworkits/Ricerche/RicercaMovimenti3.php?DA=".$data1."&A=".$data2;
                                     
                                     
-                                    
-                                        header("Location: $url");
-                                                                        
+                                    if (empty($data1) ==false){
+                                        header("Location: http://localhost/Projectworkits/Ricerche/RicercaMovimenti3.php");
+                                    }else{
+                                        
+                                    }                                        
                                 }
                                 ?>
                             </form>
