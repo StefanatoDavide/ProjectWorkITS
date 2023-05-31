@@ -1,0 +1,45 @@
+#errore{
+    display:none;
+    color:#d4c03d;
+}
+#info{
+    display:none;
+    color:#d4c03d;
+}
+#demo{
+    text-align: center;
+    font-size: 10px; 
+}
+.davide{
+    width: 40%;
+    margin: 10px auto;
+    background-color: black;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    text-align: center;
+    border-radius: 50px;
+    
+  }
+
+.centrare{
+    margin: 10px auto;
+
+}
+@font-face {
+    font-family: 'Arvo-Bold';
+    src: url('Arvo-Bold.eot');
+    src: local('Arvo-Bold'), url('Arvo-Bold.ttf') format('truetype');
+  }
+#font {
+    font: 50px 'Arvo-Bold', Georgia, serif;
+    color: #d4c03d;
+    
+  
+  }
+body{
+    background-image: url(marmosfondo.jpg);
+}
+.glow-button:hover {
+    color: rgba(255, 255, 255, 1);
+    box-shadow: 0 5px 15px rgba(207, 117, 6, 0.4);
+  }
