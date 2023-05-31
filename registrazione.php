@@ -235,7 +235,7 @@ if (isset($_REQUEST["invio"]) && $_POST['captcha'] == $_SESSION['captcha']) {
                 <p id="info"></p>
             </div>
             <div>
-                <p><img src="http://localhost/ProjectWorkITS/ProjectWorkITS/ProjectWorkITS/captcha.php"></p>
+                <p><img src="http://localhost/Projectworkits/Captcha/captcha.php"></p>
                 <label>CAPTCHA <input type="text" name="captcha" required><br><br>
 
             </div>
