@@ -157,7 +157,6 @@
         <table class="table table-bordered ">
         <?php
             $movimento = $_GET["ID"];
-            //                   server      utente               password        database
             $conn=mysqli_connect("localhost", "root", "", "projectworkits");
             $strSQL="SELECT * FROM `tmovimenticontocorrente` INNER JOIN tcategoriemovimenti ON tmovimenticontocorrente.CategoriaMovimentoID=tcategoriemovimenti.CategoriaMovimentoID WHERE `ContoCorrenteID`=1 AND MovimentoID ='$movimento'";
             $query=mysqli_query($conn, $strSQL);

@@ -10,8 +10,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
     <title>Login</title>
     
-    
-
     <script>
         function isOnlyDigits(string) {
             for (let i = 0; i < string.length; i++) {
@@ -153,9 +151,9 @@
             </div>
         </nav>
     </header>
+
     <div class="container-fluid">
         <?php
-            //                   server      utente               password        database
             $conn=mysqli_connect("localhost", "root", "", "projectworkits");
             $strSQL="SELECT * FROM `tconticorrenti` WHERE `ContoCorrenteID`=1";
             $query=mysqli_query($conn, $strSQL);
@@ -166,13 +164,11 @@
             $row2 = mysqli_fetch_assoc($query2);
 
             if (!$conn) {
-                die("Connessione al database fallita: " . mysqli_connect_error());
+                die("Connessione al database fallita: ". mysqli_connect_error());
                 }
             
            
             echo("<h1>".$row['NomeTitolare']." ".$row['CognomeTitolare']."</h1><p>Conto aperto in data: ".$row['DataApertura']."</p><h3>Saldo:".$row2["Saldo"]."€</h3>");
-
-        
         ?>
     </div>
     <div class="container-fluid" > 
