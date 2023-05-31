@@ -48,7 +48,8 @@
             unset($_REQUEST["Login"]);
             unset($_REQUEST["captcha"]);
             unset($_SESSION["emailPerLog"]);
-           
+            header("location: http://localhost/ProjectWorkITS/index.php");
+            exit;
         }
         else
         {
