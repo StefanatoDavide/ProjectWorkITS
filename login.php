@@ -100,6 +100,26 @@
 
 </head>
 <body onload="setInterval(myFunction, 30000),avviaCountdown()">
+<?php   
+ function setInterval($milliseconds)
+ {       $int=1;
+         $seconds=(int)$milliseconds/1000;
+         while(true)
+         {
+             $difference = time() - $_SESSION["locked"];
+             echo($int);
+             if ($difference >=10)
+             {   
+                 unset($_SESSION["locked"]);
+                 unset($_SESSION["login_attempts"]);
+                 header("Refresh:0");
+                 break;
+             }
+             sleep($seconds);
+         }
+ }
+?>
+
 <div>
     <form action="" method="post" onsubmit="return Controllo()" id="Form">
         <h2>Member Login</h2>
@@ -118,7 +138,6 @@
             <?php
                 if ($_SESSION["login_attempts"] >= 3) {
                     $_SESSION["locked"] = time();
-                    
                     echo "<p>Hai superato il limite di tentativi aspetta 1 minuto e ritenta</p>";
                     setInterval(1000);
                     
@@ -212,24 +231,7 @@
         mysqli_close($conn);
         unset($_REQUEST["Invio"]);
     }
-    function setInterval($milliseconds)
-    {       $int=1;
-            $seconds=(int)$milliseconds/1000;
-            while(true)
-            {
-                $difference = time() - $_SESSION["locked"];
-                echo($int);
-                if ($difference >=10)
-                {   
-                    
-                    unset($_SESSION["locked"]);
-                    unset($_SESSION["login_attempts"]);
-                    $curpage = $_SERVER["PHP_SELF"];
-                    break;
-                }
-                sleep($seconds);
-            }
-    }
+   
 ?>
 <script>
     function Controllo(){
