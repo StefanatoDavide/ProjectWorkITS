@@ -42,8 +42,8 @@
 <body>
     <header>
         <nav class="navbar navbar-expand-md bg-light navbar-light">
-            <a class="navbar-brand" href="index.php" colour>
-                <img border="0" alt="W3Schools" src="CoinLogo.jpg" width="50" height="50">
+            <a class="navbar-brand" href="http://localhost/Projectworkits/index.php" colour>
+                <img border="0" alt="W3Schools" src="http://localhost/Projectworkits/CoinLogo.jpg" width="50" height="50">
             </a>  
 
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
@@ -56,7 +56,7 @@
                             Account
                         </a>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="Index.php">Informazioni account</a>
+                            <a class="dropdown-item" href="http://localhost/Projectworkits/index.php">Informazioni account</a>
                             <a class="dropdown-item" href="http://localhost/Projectworkits/Account/ModificaPassword.php">Modifica password</a>
                             <a class="dropdown-item text-danger" href="http://localhost/Projectworkits/Account/LogOut.php">Log Out</a>
                         </div>
@@ -151,56 +151,112 @@
             </div>
         </nav>
     </header>
+<?php
+// session_start();
+// $userID=0;
+// //Verifica se l'utente è autenticato tramite sessione
+// if (!isset($_SESSION['logged_in'])) {
+//    // L'utente non è autenticato, reindirizza alla pagina di accesso
+//    header('Location: login.php');
+//    exit;
+// }
+// else{
+// $email = $_SESSION['email'];
+// $saldoQuery = "SELECT ContoCorrenteID FROM tmovimenticontocorrente WHERE email = ?";
+// $stmt1 = $conn->prepare($saldoQuery);
+// $stmt1->bind_param("s", $email);
+// $stmt1->execute();
+// $result1 = $stmt1->get_result();
+// $userID= $result1->fetch_assoc()['ContoCorrenteID'];
+// }
 
-    <div class="container-fluid">
-        <?php
-            $conn=mysqli_connect("localhost", "root", "", "projectworkits");
-            $strSQL="SELECT * FROM `tconticorrenti` WHERE `ContoCorrenteID`=1";
-            $query=mysqli_query($conn, $strSQL);
-            $row = mysqli_fetch_assoc($query);
 
-            $strSQL2="SELECT * FROM `tmovimenticontocorrente` WHERE `ContoCorrenteID`=1 ORDER BY `MovimentoID` DESC LIMIT 1";
-            $query2=mysqli_query($conn, $strSQL2);
-            $row2 = mysqli_fetch_assoc($query2);
+$userID=2;
+// Connessione al database 
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "projectworkits";
 
-            if (!$conn) {
-                die("Connessione al database fallita: ". mysqli_connect_error());
-                }
-            
-           
-            echo("<h1>".$row['NomeTitolare']." ".$row['CognomeTitolare']."</h1><p>Conto aperto in data: ".$row['DataApertura']."</p><h3>Saldo:".$row2["Saldo"]."€</h3>");
-        ?>
-    </div>
-    <div class="container-fluid" > 
-        <h2>Ultimi movimenti</h2>
-        <table class="table table-bordered ">
-            <thead>
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+$numeroMovimenti=0;
+// Ottieni il numero di movimenti da visualizzare
+if($_GET["ID"]!=""){
+    $numeroMovimenti = intval($_GET["ID"]);
+    $query = "SELECT m.Data, m.Importo, c.NomeCategoria
+          FROM tmovimenticontocorrente m
+          INNER JOIN tcategoriemovimenti c ON m.CategoriaMovimentoID = c.CategoriaMovimentoID
+          WHERE m.ContoCorrenteID = ?
+          ORDER BY m.Data DESC
+          LIMIT ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("ii", $userID,$numeroMovimenti);
+    $stmt->execute();
+    $result = $stmt->get_result();
+}
+else{
+    $numeroMovimenti=$_POST["numero_movimenti"];
+    $query = "SELECT m.Data, m.Importo, c.NomeCategoria
+    FROM tmovimenticontocorrente m
+    INNER JOIN tcategoriemovimenti c ON m.CategoriaMovimentoID = c.CategoriaMovimentoID
+    WHERE m.ContoCorrenteID = ?
+    ORDER BY m.Data DESC
+    LIMIT ?";   
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("ii", $userID,$numeroMovimenti);
+    $stmt->execute();
+    $result = $stmt->get_result();
+}
+
+
+// Calcola il saldo finale del conto corrente
+$saldoQuery = "SELECT Saldo FROM tmovimenticontocorrente WHERE ContoCorrenteID = ? ORDER BY Data DESC LIMIT 1;";
+$stmt1 = $conn->prepare($saldoQuery);
+$stmt1->bind_param("i", $userID);
+$stmt1->execute();
+$result1 = $stmt1->get_result();
+$saldo= $result1->fetch_assoc()['Saldo'];
+// Chiudi la connessione al database
+$conn->close();
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ricerca Movimenti</title>
+</head>
+<body>
+    <h1>Ricerca Movimenti</h1>
+
+    <form method="post" action="http://localhost/Projectworkits/Ricerche/RicercaMovimenti1.php?ID=&NumeroMovimenti=">
+        <label for="numero_movimenti">Numero Movimenti:</label>
+        <input type="number" id="numero_movimenti" name="numero_movimenti" value="<?php echo $numeroMovimenti; ?>">
+        <button type="submit">Cerca</button>
+    </form>
+
+    <h2>Movimenti</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Data</th>
+                <th>Importo</th>
+                <th>Nome Categoria</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php while ($row = $result->fetch_assoc()) : ?>
                 <tr>
-                    <th>Destinatario Transazione</th>
-                    <th>Data <small class ="text-secondary">(YYYY/MM/DD)</small></th>
-                    <th>Importo</th>
-                    <th>#</th>
+                    <td><?php echo $row['Data']; ?></td>
+                    <td><?php echo $row['Importo']; ?></td>
+                    <td><?php echo $row['NomeCategoria']; ?></td>
                 </tr>
-            </thead>
-            <tbody>
-                <?php
-                    $strSQL="SELECT * FROM `tmovimenticontocorrente` WHERE `ContoCorrenteID` = 1 ORDER BY `MovimentoID` DESC LIMIT 5";
-                    $query=mysqli_query($conn, $strSQL);
-                    while ($row = mysqli_fetch_assoc($query)) 
-                    {
-                        $dettaglio = "http://localhost/Projectworkits/DettaglioMovimento.php?ID=".$row["MovimentoID"];
-                        echo("<tr>");
-                        echo("<td><strong>".$row["DescrizioneEstesa"]."</strong></td>");
-                        echo("<td>".$row["Data"]."</td>");
-                        echo("<td>".$row["Importo"]."€</td>");
-                        echo("<td><a href='$dettaglio' class='text-info'>Dettagli</a></td>");
-                        echo("</tr>");
-                    }
-                    //chiudo connessione
-                    mysqli_close($conn);
-                ?>
-            </tbody>
-        </table>
-    </div>
+            <?php endwhile; ?>
+        </tbody>
+    </table>
+
+    <h2>Saldo Finale</h2>
+    <p><?php echo $saldo; ?></p>
+
 </body>
 </html>

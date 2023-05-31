@@ -8,8 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-    <title>Login</title>
-    
+    <title>Dettaglio Movimento</title>
     <script>
         function isOnlyDigits(string) {
             for (let i = 0; i < string.length; i++) {
@@ -114,7 +113,7 @@
                                     <input class="form-control  " type="date" id = "IDda" name="Datada">
                                 </div> </br>
                                 <div class="form-group mx-auto ">
-                                    <label for="a" class="mr-sm-2"> A:</label>
+                                    <label for="a" class="mr-sm-2">A:</label>
                                     <input class="form-control " type="date" id = "IDa" name="DataA">
                                 </div>
                                 <button class="btn btn-success btn-block " type="submit" >Cerca</button>
@@ -129,6 +128,7 @@
                                     
                                     
                                     if (empty($data1) ==false){
+                                        echo '<script>alert("Alert2")</script>';
                                         header("Location: http://localhost/Projectworkits/Ricerche/RicercaMovimenti3.php");
                                     }else{
                                         
@@ -150,57 +150,32 @@
                 </ul>
             </div>
         </nav>
-    </header>
-
+    </header>  
+    </br>
     <div class="container-fluid">
+    <h2 >Dettagli transazione</h2></br>
+        <table class="table table-bordered ">
         <?php
+            $movimento = $_GET["ID"];
             $conn=mysqli_connect("localhost", "root", "", "projectworkits");
-            $strSQL="SELECT * FROM `tconticorrenti` WHERE `ContoCorrenteID`=1";
+            $strSQL="SELECT * FROM `tmovimenticontocorrente` INNER JOIN tcategoriemovimenti ON tmovimenticontocorrente.CategoriaMovimentoID=tcategoriemovimenti.CategoriaMovimentoID WHERE `ContoCorrenteID`=1 AND MovimentoID ='$movimento'";
             $query=mysqli_query($conn, $strSQL);
             $row = mysqli_fetch_assoc($query);
 
-            $strSQL2="SELECT * FROM `tmovimenticontocorrente` WHERE `ContoCorrenteID`=1 ORDER BY `MovimentoID` DESC LIMIT 1";
-            $query2=mysqli_query($conn, $strSQL2);
-            $row2 = mysqli_fetch_assoc($query2);
-
             if (!$conn) {
-                die("Connessione al database fallita: ". mysqli_connect_error());
-                }
-            
-           
-            echo("<h1>".$row['NomeTitolare']." ".$row['CognomeTitolare']."</h1><p>Conto aperto in data: ".$row['DataApertura']."</p><h3>Saldo:".$row2["Saldo"]."€</h3>");
+                die("Connessione al database fallita: " . mysqli_connect_error());
+            }
+
+            echo("<tbody><tr><td><b>Data transazione</b></td><td>".$row["Data"]."</td></tr></tbody>");
+            echo("<tbody><tr><td><b>Importo</b></td><td>".$row["Importo"]."€</td></tr></tbody>");
+            echo("<tbody><tr><td><b>Categoria transazione</b></td><td>".$row["NomeCategoria"]."</td></tr></tbody>");
+            echo("<tbody><tr><td><b>Descrizione movimento</b></td><td>".$row["DescrizioneEstesa"]."</td></tr></tbody>");
+            echo("<tbody><tr><td><b>Tipologia</b></td><td>".$row["tipologia"]."</td></tr></tbody>");
+
+            //chiudo connessione
+            mysqli_close($conn);
         ?>
     </div>
-    <div class="container-fluid" > 
-        <h2>Ultimi movimenti</h2>
-        <table class="table table-bordered ">
-            <thead>
-                <tr>
-                    <th>Destinatario Transazione</th>
-                    <th>Data <small class ="text-secondary">(YYYY/MM/DD)</small></th>
-                    <th>Importo</th>
-                    <th>#</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                    $strSQL="SELECT * FROM `tmovimenticontocorrente` WHERE `ContoCorrenteID` = 1 ORDER BY `MovimentoID` DESC LIMIT 5";
-                    $query=mysqli_query($conn, $strSQL);
-                    while ($row = mysqli_fetch_assoc($query)) 
-                    {
-                        $dettaglio = "http://localhost/Projectworkits/DettaglioMovimento.php?ID=".$row["MovimentoID"];
-                        echo("<tr>");
-                        echo("<td><strong>".$row["DescrizioneEstesa"]."</strong></td>");
-                        echo("<td>".$row["Data"]."</td>");
-                        echo("<td>".$row["Importo"]."€</td>");
-                        echo("<td><a href='$dettaglio' class='text-info'>Dettagli</a></td>");
-                        echo("</tr>");
-                    }
-                    //chiudo connessione
-                    mysqli_close($conn);
-                ?>
-            </tbody>
-        </table>
-    </div>
+
 </body>
 </html>
