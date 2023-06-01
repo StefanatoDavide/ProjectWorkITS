@@ -82,6 +82,7 @@
 </head>
 <body onload="setInterval(myFunction, 60000)">
 <img src="30secmod.gif" width="225" height="225" class="rounded mx-auto d-block img-fluid">
+
 <div class="davide">
     <form action="" method="post" onsubmit="return Controllo()" id="Form" >
     <a id="font">Log-In</a>
@@ -103,7 +104,7 @@
         </div>
         <div >
         <div>
-            <p><img src="http://localhost/Projectworkits/Captcha/captcha.php" /></p>
+            <p><img src="http://localhost/ProjectWorkITS/ProjectWorkITS/ProjectWorkITS/captcha.php" /></p>
             <label style="color:#a76b09;">CAPTCHA</label><br><input type="text" name="captcha" required style="background-color:#dda74f;"><br><br>
         </div>
         <input name="Invio" id="sub" type="submit" value="Accedi" class="btn btn-default glow-button" style="background-color:#d4c03d;">
@@ -113,12 +114,14 @@
                     echo("<script>document.getElementById('info').style.display='block'; document.getElementById('info').innerHTML='';document.getElementById('info').innerHTML='Tre tentativi di login errati. Si prega di riprovare tra 1 minuto.';document.getElementById('sub').disabled=true; const myTimeout = setTimeout(enableSubmit, 10000); function enableSubmit(){document.getElementById('sub').disabled=false;} function myStopFunction(){clearTimeout(myTimeout);}</script>");
                     unset($_SESSION["login_attempts"]);  
                  } 
+
             }
                
             ?>
                 
             
         </div>
+        
     </form>
     <?php
             function attivaSubmit2(){

@@ -43,3 +43,38 @@ body{
     color: rgba(255, 255, 255, 1);
     box-shadow: 0 5px 15px rgba(207, 117, 6, 0.4);
   }
+  #message {
+    display:none;
+    background: #070707;
+    color: #d4c03d;
+    padding: 5px;
+    margin-top: 10px;
+    position: absolute;
+    top :50%;
+    left:70%;
+}
+
+#message p {
+    padding: 10px 35px;
+    font-size: 18px;
+}
+.valid {
+  color: green;
+}
+
+.valid:before {
+  position: relative;
+  left: -35px;
+  content: "✔ ";
+}
+
+  
+.invalid {
+  color: red;
+}
+
+.invalid:before {
+  position: relative;
+  left: -35px;
+  content: "✖";
+}
