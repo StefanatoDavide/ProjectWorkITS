@@ -2,7 +2,8 @@
     error_reporting(0);
     session_start();
     $isok1=false;
-    $isok2=false;
+    $captchaErrato=false;
+    
     //funzione per ottenere l'indirizzo pubblico dell'host
     function getPublicIP() {
         $curl = curl_init();
@@ -13,42 +14,47 @@
         $ip = json_decode($output, true);
         return $ip['origin'];
       }
+
+    if (isset($_REQUEST["Invio"])&&($_POST['captcha'] == $_SESSION['captcha']))
+    {
       
-
-    if (isset($_SESSION["locked"]))
-    {
-
-        /*function setInterval($f, $milliseconds)
-        {
-            $seconds=(int)$milliseconds/1000;
-            while(true)
-            {
-                $f();
-                sleep($seconds);
-            }
-        }       
-        $difference = time() - $_SESSION["locked"];
-        if ($difference >=60)
-        {
-            unset($_SESSION["locked"]);
-            unset($_SESSION["login_attempts"]);
-            $curpage = $_SERVER["PHP_SELF"];
-        }*/
-    }
-
-    if (isset($_REQUEST["Invio"]))
-    {
         $isok1=true;
         $email =trim(htmlspecialchars($_POST["email"]));
         $password =trim(htmlspecialchars($_POST["password"]));
-        $hash = password_hash($password,PASSWORD_DEFAULT);
+        srand((double)microtime()*1000000);
+        $codice=rand(1001,9999); 
+        $_SESSION["codice"]=$codice;
+        $_SESSION["emailPerLog"]=$email;
+       
+       
 
     }
-
+    else
+    {
+        if(isset($_REQUEST["Invio"])&&($_POST['captcha'] != $_SESSION['captcha']))
+        {
+            $captchaErrato=true;
+        }
+    }
+    
     if(isset($_REQUEST["Login"]))
     {
-        $isok2=true;
-        //$_SESSION[""]
+        $codiceErrato=false;
+        if($_SESSION["codice"]==$_REQUEST["codiceConferma"])
+        {
+            $_SESSION["logged_in"]=$_SESSION["emailPerLog"];
+            unset($_SESSION["codice"]);
+            unset($_REQUEST["Login"]);
+            unset($_REQUEST["captcha"]);
+            unset($_SESSION["emailPerLog"]);
+           
+        }
+        else
+        {
+            $codiceErrato=true;
+            unset($_REQUEST["Login"]);
+            
+        }
     }
    
     
@@ -66,120 +72,218 @@
 <style>
     #errore{
         display:none;
+        color:#d4c03d;
     }
     #info{
         display:none;
+        color:#d4c03d;
     }
     #demo{
         text-align: center;
         font-size: 10px; 
     }
+    
+    body {
+      font-family: Arial, sans-serif;
+      background-image: url(marmosfondo.jpg);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background-color: black;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      padding: 40px;
+      width: 400px;
+      max-width: 100%;
+      text-align: center;
+      border-radius: 50px 50px 50px 50px;
+      position: absolute;
+      bottom: 50px;
+      
+      
+    }
+
+    .container h2 {
+      margin-bottom: 30px;
+      color: black;
+    }
+
+    .container input[type="text"],
+    .container input[type="password"],
+    .container input[type="email"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 50px;
+      border: 1px solid #ccc;
+      background-color: #d4c03d;
+    }
+
+
+
+    .container input[type="submit"] {
+      background-color: black;
+      color: #d4c03d;
+      border: none;
+      padding: 12px 0;
+      width: 100%;
+      border-radius: 50px;
+      cursor: pointer;
+    }
+
+    ::placeholder {
+      color: black;
+    }
+
+    .container input[type="submit"]:hover {
+      background-color: #d4c03d;
+      color: black;
+    }
+
+    .container p.error-message {
+      color: red;
+      margin-bottom: 20px;
+    }
+
+    @font-face {
+      font-family: 'AlexBrush-Regular';
+      src: url('AlexBrush-Regular.eot');
+      src: local('AlexBrush-Regular'), url('AlexBrush-Regular.ttf') format('truetype');
+    }
+
+    #font {
+      font: 65px 'AlexBrush-Regular', Georgia, serif;
+      color: #d4c03d;
+      position: relative;
+      bottom: 225spx;
+    }
+
+    .img {
+      position: absolute;
+      top: 10px
+    }
+
+    .glow-button:hover {
+      color: rgba(255, 255, 255, 1);
+      box-shadow: 0 5px 15px rgba(207, 117, 6, 0.4);
+    }
+    #bord{
+      border-color: #d4c03d;
+    }
+  
 </style>
 <script>
     function myFunction(){
         document.getElementById("Form").reset();
     }
-
-    
-    function avviaCountdown() {
-    var durataCountdown = 30;
-    var countdownElement = document.getElementById("countdown");
-    var countdownInterval = setInterval(function() {
-    countdownElement.textContent = durataCountdown;
-    durataCountdown--;
-
-    if (durataCountdown <= 0) {
-        durataCountdown = 30;
-        countdownElement.textContent = durataCountdown;
-    }
-    }, 1000); 
-    }
-
-  
 </script>
 
 </head>
-<body onload="setInterval(myFunction, 30000),avviaCountdown()">
-<div>
+<body onload="setInterval(myFunction, 30000)">
+<img src="30secmod.gif" width="225" height="225" class="img">
+<div class="container">
     <form action="" method="post" onsubmit="return Controllo()" id="Form">
-        <h2>Member Login</h2>
+    <a id="font">Log-In</a>
         <div>
-            <input type="text" name="email" placeholder="Email" required="required" id="email">
+            <label id="l1" for="email" style="color:#d4c03d;">Email: </label>
+            <input type="email" name="email" placeholder="henrymiles@gmail.com" autocomplete="off" required id="email">
         </div>
         <div >
-            <input type="password" name="password" placeholder="Password" required="required" id="password">
+            <label id="l2" for="email" style="color:#d4c03d;">Password: </label>
+            <input type="password" name="password" placeholder="********" maxlength="20" autocomplete="off" required id="password">
         </div>        
 
         <div>
             <p id="errore"></p>
-            <p id="info"></p>
+            <p id="info" ></p>
         </div>
         <div >
+        <div>
+            <p><img src="http://localhost/ProjectWorkITS/ProjectWorkITS/ProjectWorkITS/captcha.php" /></p>
+            <label style="color:#d4c03d;">CAPTCHA <input type="text" name="captcha" required><br><br>
+        </div>
+        <input name="Invio" id="sub" type="submit" value="Accedi" class="glow-button">
             <?php
                 if ($_SESSION["login_attempts"] >= 3) {
-                    $_SESSION["locked"] = time();
-                    
-                    echo "<p>Hai superato il limite di tentativi aspetta 1 minuto e ritenta</p>";
-                    setInterval(1000);
-                    
-                } else {
+                   echo("<script>document.getElementById('info').style.display='block'; document.getElementById('info').innerHTML='';document.getElementById('info').innerHTML='Tre tentativi di login errati. Si prega di riprovare tra 1 minuto.';document.getElementById('sub').disabled=true; const myTimeout = setTimeout(enableSubmit, 10000); function enableSubmit(){document.getElementById('sub').disabled=false;} function myStopFunction(){clearTimeout(myTimeout);}</script>");
+                   unset($_SESSION["login_attempts"]);  
+                } 
             ?>
-                <input name="Invio" type="submit" value="Accedi">
-            <?php } ?>
+                
+            
         </div>
     </form>
     <?php
-        if($isok){
+        function attivaSubmit2(){
+           
             echo('<form method="post" action="">');
             echo("<label for='lCodice'>Inserisci il codice ricevuto via mail</label>");
             echo("<input type='text' name='codiceConferma' id='lCodice' autocomplete='off' placeholder='codice' required>");
             echo("<input type='submit' name='Login' value='Login'>");
-
             echo("</form>");
+            
         }
+        if($codiceErrato==true)
+        {
+            echo("<div class='alert alert-danger' role='alert'>Codice errato! Riprovare.</div>");
+            attivaSubmit2();
+            
+        }
+
     ?>
 </div>
-<p id="paragrafoCount">Countdown: <span id="countdown"></span> secondi</p>
 </body>
 
 <?php
     if($isok1){
+        echo("<script>document.getElementById('errore').style.display='block';document.getElementById('errore').innerHTML='';</script>");
         $conn = mysqli_connect("localhost", "root", "", "projectworkits");
-        $result = $conn->prepare("select * from tconticorrenti WHERE email = ?  AND password = ? ");
-        $result->bind_param("ss",$email,$hash);
+        $result = $conn->prepare("select * from tconticorrenti WHERE email = ? AND RegistrazioneConfermata=?");
+        $regConfermata=1;
+        $result->bind_param("si",$email,$regConfermata);
         $result->execute();
         $dati=$result->get_result();
         $ip=getPublicIP();
-
-        if (mysqli_num_rows($dati) > 0)
-        {
+        $cc = $dati->fetch_assoc();
+        if (mysqli_num_rows($dati) > 0&&password_verify($password, $cc["password"]))
+        {   
             echo("<script>document.getElementById('info').style.display='block'; document.getElementById('info').innerHTML='';document.getElementById('info').innerHTML='Inserire il codice inviato tramite mail nel campo sottostante.';</script>");
             date_default_timezone_set("Europe/Rome");
             $date= date("Y-m-d h:i:sa");
             $valido=1;
             $queryInsert=$conn->prepare("insert into taccessi (IndirizzoIP, DataOra, ValiditaAccesso) VALUES ( ?, ?, ?)");
             $queryInsert->bind_param("ssi",$ip,$date,$valido);
-            if($queryInsert->execute()){
-                $isok=true;
-                $object="Conferma registrazione";
+            if($queryInsert->execute())
+            {
+                $object="Conferma login";
                 $header="From: zion.holdingcompanyita@gmail.com";
                 $head = "MIME-Version: 1.0\r\n";
                 $head .= "Content-type: text/html; charset=utf-8";
-                $html=file_get_contents("email_template.html");
-                $html = str_replace("{NOME}", $nome, $html);
-                $html = str_replace("{COGNOME}", $cognome, $html);
-                $html = str_replace("{TOKEN}", $token, $html);
+                $html=file_get_contents("email_template2.html");
+                $html = str_replace("{CODICE}",$codice, $html);
                 
                 
-                if(!mail($mail,$object,$html,$head))
+                if(!mail($email,$object,$html,$head))
                 {
                     echo("<script>document.getElementById('errore').style.display='block';document.getElementById('errore').innerHTML='';document.getElementById('errore').innerHTML='Si è verificato un errore durante l'invio della mail. Si prega di riprovare.';</script>");
                 }
+                else
+                {
+                    attivaSubmit2();
+                }
+               
             }
-            else{
+            else
+            {
                 echo("<script>document.getElementById('errore').style.display='block'; document.getElementById('errore').innerHTML='';document.getElementById('errore').innerHTML='Errore generico';</script>");
             }
-        $queryInsert->close();
+            $queryInsert->close();
 
         }
         else
@@ -193,7 +297,7 @@
             $queryInsert->bind_param("ssi",$ip,$date,$valido);
             if($queryInsert->execute()){
                 echo("<script>document.getElementById('errore').style.display='block'; document.getElementById('errore').innerHTML='';document.getElementById('errore').innerHTML='Inserimento errato';</script>");
-                //header("Location: index.php");
+                
             }
             else{
                 echo("<script>document.getElementById('errore').style.display='block'; document.getElementById('errore').innerHTML='';document.getElementById('errore').innerHTML='Errore generico';</script>");
@@ -211,25 +315,15 @@
         }
         mysqli_close($conn);
         unset($_REQUEST["Invio"]);
+
+      
     }
-    function setInterval($milliseconds)
-    {       $int=1;
-            $seconds=(int)$milliseconds/1000;
-            while(true)
-            {
-                $difference = time() - $_SESSION["locked"];
-                echo($int);
-                if ($difference >=10)
-                {   
-                    
-                    unset($_SESSION["locked"]);
-                    unset($_SESSION["login_attempts"]);
-                    $curpage = $_SERVER["PHP_SELF"];
-                    break;
-                }
-                sleep($seconds);
-            }
+    if($captchaErrato)
+    {
+        echo("<script>document.getElementById('errore').style.display='block';document.getElementById('errore').innerHTML='';document.getElementById('errore').innerHTML='Captcha errato!';</script>");
     }
+   
+   
 ?>
 <script>
     function Controllo(){

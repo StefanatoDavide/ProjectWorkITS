@@ -26,224 +26,72 @@ if (isset($_REQUEST["invio"]) && $_POST['captcha'] == $_SESSION['captcha']) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrazione</title>
-
-    <style>
-        #errore {
-            display: none;
-            color: #d4c03d;
-        }
-
-        #info {
-            display: none;
-            color:#d4c03d;
-        }
-        
-
-        #message {
-            display: none;
-            background: black;
-            color: #000;
-            position: absolute;
-            right: 10px;
-            padding: 20px;
-            margin-top: 10px;
-        }
-
-        #message p {
-            padding: 10px 35px;
-            font-size: 18px;
-        }
-
-        .valid {
-            color: green;
-        }
-
-        .valid:before {
-            position: relative;
-            left: -35px;
-            content: "✔";
-        }
-
-
-        .invalid {
-            color: #d4c03d;
-        }
-
-        .invalid:before {
-            position: relative;
-            left: -35px;
-            content: "✖";
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            background-image: url(marmosfondo.jpg);
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        .container {
-            background-color: black;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            padding: 40px;
-            width: 400px;
-            max-width: 100%;
-            text-align: center;
-            border-radius: 50px 50px 50px 50px;
-            position: absolute;
-            top: 310px;
-
-        }
-
-        .container h2 {
-            margin-bottom: 30px;
-            color: black;
-        }
-
-        .container input[type="email"],
-        .container input[type="text"],
-        .container input[type="password"] {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            border-radius: 50px;
-            border: 1px solid #ccc;
-            background-color: #d4c03d;
-        }
-
-
-
-        .container input[type="submit"],
-        .container input[type="reset"] {
-            background-color: black;
-            color: #d4c03d;
-            border: none;
-            padding: 12px 0;
-            width: 100%;
-            border-radius: 50px;
-            cursor: pointer;
-            text-align: center;
-            position: static;
-        }
-
-        ::placeholder {
-            color: black;
-        }
-
-        .container input[type="submit"]:hover {
-            background-color: #d4c03d;
-            color: black;
-        }
-
-        .container input[type="reset"]:hover {
-            background-color: #d4c03d;
-            color: black;
-        }
-
-
-        .container p.error-message {
-            color: red;
-            margin-bottom: 20px;
-        }
-
-        .img {
-            position: absolute;
-            top: 20px;
-            right: 650px;
-
-        }
-
-        label {
-            color: #d4c03d;
-        }
-
-        #error {
-            color: #d4c03d;
-        }
-
-        @font-face {
-            font-family: 'AlexBrush-Regular';
-            src: url('AlexBrush-Regular.eot');
-            src: local('AlexBrush-Regular'), url('AlexBrush-Regular.ttf') format('truetype');
-        }
-
-        #font {
-            font: 65px 'AlexBrush-Regular', Georgia, serif;
-            color: #d4c03d;
-            position: relative;
-            bottom: 100px;
-        }
-
-        .glow-button:hover {
-            color: rgba(255, 255, 255, 1);
-            box-shadow: 0 10px 25px rgba(207, 117, 6, 0.4);
-        }
-    </style>
-
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 
 
-</head>
+
 
 <body>
     <header>
 
     </header>
-    <div style="background-color:rgba(0, 0, 0, 0.1);">
-        <div id="font">
-            Registrazione
-        </div>
-    </div>
 
-    <a href="#"><img src="30secmod.gif" width="225" height="225" class="img"></a>>
-    <div class="container">
-        <form action="" method="POST" onsubmit="return Controllo()">
-            <div>
-                <label for="email" id="l1">Email: </label>
-                <input type="email" id="email" name="email" autocomplete="off" placeholder="henrymiles@gmail.com"
-                    required>
+
+    <a href="#"><img src="30secmod.gif" width="225" height="225" class="rounded mx-auto d-block img-fluid"></a>
+    <div class="davide">
+        <div style="background-color:rgba(0, 0, 0, 0.1);">
+            <div id="font">
+                Registrazione
             </div>
-            <div>
-                <label for="password" id="l2">Password: </label>
-                <input type="password" id="password" name="password" autocomplete="off"
-                    pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+        </div>
+        <form action="" method="POST" onsubmit="return Controllo()">
+            <div class="form-group w-75 centrare">
+                <label for="email" id="l1" style="color:#a76b09;">Email: </label>
+                <input type="email" id="email" name="email" autocomplete="off" placeholder="henrymiles@gmail.com"
+                    required class="form-control" style="background-color:#dda74f;">
+            </div>
+            <div class="form-group w-75 centrare">
+                <label for="password" id="l2" style="color:#a76b09;">Password: </label>
+                <input type="password" id="password" name="password" autocomplete="off" class="form-control"
+                    style="background-color:#dda74f;" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
                     title="Deve contenere almeno un numero e una lettera maiuscola, deve avere un numero di carateri compreso tra 8 e 20"
                     maxlength="20" placeholder="******" required>
             </div>
-            <div>
-                <label for="passwordConferma" id="l3">Conferma password: </label>
+            <div class="form-group w-75 centrare">
+                <label for="passwordConferma" id="l3" style="color:#a76b09;">Conferma password: </label>
                 <input type="password" id="passwordConferma" name="passwordConferma" autocomplete="off"
-                    placeholder="******" maxlength="20" required>
+                    placeholder="******" maxlength="20" required class="form-control" style="background-color:#dda74f;">
             </div>
-            <div>
-                <label for="nomeTitolare" id="l4">Nome titolare: </label>
-                <input type="text" id="nomeTitolare" name="nomeTitolare" autocomplete="off" placeholder="Henry"
-                    required>
+            <div class="form-group w-75 centrare">
+                <label for="nomeTitolare" id="l4" style="color:#a76b09;">Nome titolare: </label>
+                <input type="text" id="nomeTitolare" name="nomeTitolare" autocomplete="off" placeholder="Henry" required
+                    class="form-control" style="background-color:#dda74f;">
             </div>
-            <div>
-                <label for="cognomeTitolare" id="l5">Cognome titolare: </label>
+            <div class="form-group w-75 centrare">
+                <label for="cognomeTitolare" id="l5" style="color:#a76b09;">Cognome titolare: </label>
                 <input type="text" id="cognomeTitolare" name="cognomeTitolare" autocomplete="off" placeholder="Miles"
-                    required>
+                    required class="form-control" style="background-color:#dda74f;">
             </div>
             <div>
-                <p id="errore"></p>
-                <p id="info"></p>
+                <p id="errore" class="alert alert-danger" role="alert"></p>
+                <p id="info" class="alert alert-warning" role="alert"></p>
             </div>
             <div>
                 <p><img src="http://localhost/ProjectWorkITS/ProjectWorkITS/ProjectWorkITS/captcha.php"></p>
-                <label>CAPTCHA <input type="text" name="captcha" required><br><br>
+                <label style="color:#a76b09;">CAPTCHA <input type="text" name="captcha" required
+                        style="background-color:#dda74f;"><br><br>
 
             </div>
             <div class="button">
-                <input type="reset" id="reset" name="reset" value="Svuota campi" class="glow-button">
-            </div>
+                <input type="reset" id="reset" name="reset" value="Svuota campi" class="btn btn-default glow-button"
+                    style="background-color:#d4c03d;">
+            </div> <br>
             <div class="button">
-                <input type="submit" id="invio" name="invio" value="Registrati" class="glow-button">
+                <input type="submit" id="invio" name="invio" value="Registrati" class="btn btn-default glow-button"
+                    style="background-color:#d4c03d;">
             </div>
         </form>
     </div>
