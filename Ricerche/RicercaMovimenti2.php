@@ -212,11 +212,11 @@ $conn->close();
             </div>
         </nav>
     </header>
+    <div class="container text-warning davide">
     <h1>Ricerca Movimenti per Categoria</h1>
 
-    <form method="post" action="http://localhost/Projectworkits/Ricerche/RicercaMovimenti2.php?ID=&Categoria=">
-        <select name="Categorie">
-            <option value="1">Apertura Conto</option>
+    <form  method="post" action="http://localhost/Projectworkits/Ricerche/RicercaMovimenti2.php?ID=&Categoria=">
+        <select class="form text-light" style="background-color:#dda74f; border:black" name="Categorie">
             <option value="2">Bonifico Entrata</option>
             <option value="3">Versamento Bancomat</option>
             <option value="4">Bonifico Uscita</option>
@@ -230,11 +230,12 @@ $conn->close();
             <option value="12">Bollo Auto</option>
             <option value="13">Accredito Stipendio</option>
         </select>
-        <button type="submit">Cerca</button>
+        <button class="btn text-warning" type="submit">Cerca</button>
     </form>
-
-    <h2>Movimenti</h2>
-    <table>
+    </div >
+    <div class="container-fluid text-warning davide">
+        <h2>Movimenti</h2>
+        <table class="table table-bordered text-warning">
         <thead>
             <tr>
                 <th>Data</th>
@@ -252,6 +253,6 @@ $conn->close();
             <?php endwhile; ?>
         </tbody>
     </table>
-
+    </div>
 </body>
 </html>

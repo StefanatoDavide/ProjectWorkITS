@@ -214,16 +214,18 @@ $conn->close();
             </div>
         </nav>
     </header>
-    <h1>Ricerca Movimenti per Data</h1>
+    <div class = "container text-warning davide">
+        <h1>Ricerca Movimenti per Data</h1>
 
-    <form method="post" action="http://localhost/Projectworkits/Ricerche/RicercaMovimenti3.php?Datada=&DataA=">
-        <label for="dataInizio">Data Inizio</label><input type="date" name="dataInizio">
-        <label for="dataFine">Data Fine</label><input type="date" name="dataFine">
-        <button type="submit">Cerca</button>
-    </form>
-
+        <form method="post" action="http://localhost/Projectworkits/Ricerche/RicercaMovimenti3.php?Datada=&DataA=">
+            <label for="dataInizio">Data Inizio: </label><input class="form text-light" style="background-color:#dda74f; border:black" type="date" name="dataInizio">
+            <label for="dataFine">Data Fine: </label><input class="form text-light" style="background-color:#dda74f; border:black" type="date" name="dataFine">
+            <button class="btn text-warning" type="submit">Cerca</button>
+        </form>
+    </div>
+    <div class="container-fluid text-warning davide">
     <h2>Movimenti</h2>
-    <table>
+    <table class="table table-bordered text-warning">
         <thead>
             <tr>
                 <th>Data</th>
@@ -241,6 +243,6 @@ $conn->close();
             <?php endwhile; ?>
         </tbody>
     </table>
-
+    </div>
 </body>
 </html>
