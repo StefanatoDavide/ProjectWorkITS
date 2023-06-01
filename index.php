@@ -44,7 +44,7 @@
     <header>
         <nav class="navbar navbar-expand-md bg-body navbar-dark">
             <a class="navbar-brand" href="index.php" colour>
-            <img src="30secmod.gif" width="225" height="50"  style="width:130px" class="rounded d-block img-fluid">
+            <img src="http://localhost/Projectworkits/30secmod.gif" width="225" height="50"  style="width:130px" class="rounded d-block img-fluid">
             </a>  
 
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
