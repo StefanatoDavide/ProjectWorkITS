@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "projectworkits1";
+$dbname = "projectworkits";
 
 
 
