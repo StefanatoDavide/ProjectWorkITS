@@ -204,8 +204,8 @@ $conn->close();
                             Servizi
                         </a>
                         <div class="dropdown-menu bg-warning">
-                            <a class="dropdown-item" href="#">Ricarica Telefonica</a>
-                            <a class="dropdown-item" href="#">Bonifico</a>
+                            <a class="dropdown-item" href="http://localhost/Projectworkits/Servizi/RicaricaTelefonica.php">Ricarica Telefonica</a>
+                            <a class="dropdown-item" href="http://localhost/Projectworkits/Servizi/bonifico.php">Bonifico</a>
                         </div>
                     </li> 
                 </ul>
