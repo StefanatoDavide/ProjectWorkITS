@@ -43,8 +43,8 @@
 <body >
     <header>
         <nav class="navbar navbar-expand-md bg-body navbar-dark">
-            <a class="navbar-brand" href="index.php" colour>
-            <img src="30secmod.gif" width="225" height="50"  style="width:130px" class="rounded d-block img-fluid">
+            <a class="navbar-brand" href="http://localhost/Projectworkits/index.php" colour>
+            <img src="http://localhost/Projectworkits/30secmod.gif" width="225" height="50"  style="width:130px" class="rounded d-block img-fluid">
             </a>  
 
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
@@ -57,7 +57,7 @@
                             Account
                         </a>
                         <div class="dropdown-menu bg-warning">
-                            <a class="dropdown-item" href="Index.php">Informazioni account</a>
+                            <a class="dropdown-item" href="http://localhost/Projectworkits/Index.php">Informazioni account</a>
                             <a class="dropdown-item" href="http://localhost/Projectworkits/Account/ModificaPassword.php">Modifica password</a>
                             <a class="dropdown-item text-danger" href="http://localhost/Projectworkits/Account/LogOut.php">Log Out</a>
                         </div>
@@ -144,8 +144,8 @@
                             Servizi
                         </a>
                         <div class="dropdown-menu bg-warning">
-                            <a class="dropdown-item" href="#">Ricarica Telefonica</a>
-                            <a class="dropdown-item" href="#">Bonifico</a>
+                            <a class="dropdown-item" href="http://localhost/Projectworkits/Servizi/RicaricaTelefonica.php">Ricarica Telefonica</a>
+                            <a class="dropdown-item" href="http://localhost/Projectworkits/Servizi/bonifico.php">Bonifico</a>
                         </div>
                     </li> 
                 </ul>

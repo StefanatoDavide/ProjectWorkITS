@@ -66,7 +66,8 @@ $conn->close();
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://localhost/Projectworkits/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -103,35 +104,35 @@ $conn->close();
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-md bg-light navbar-light">
+        <nav class="navbar navbar-expand-md bg-body navbar-dark">
             <a class="navbar-brand" href="http://localhost/Projectworkits/index.php" colour>
-                <img border="0" alt="W3Schools" src="http://localhost/Projectworkits/CoinLogo.jpg" width="50" height="50">
+            <img src="http://localhost/Projectworkits/30secmod.gif" width="225" height="50"  style="width:130px" class="rounded d-block img-fluid">
             </a>  
 
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <div class="collapse navbar-collapse davide" id="collapsibleNavbar">
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                        <a class="nav-link dropdown-toggle text-warning" href="#" id="navbardrop" data-toggle="dropdown">
                             Account
                         </a>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="http://localhost/Projectworkits/index.php">Informazioni account</a>
+                        <div class="dropdown-menu bg-warning">
+                            <a class="dropdown-item" href="http://localhost/Projectworkits/Index.php">Informazioni account</a>
                             <a class="dropdown-item" href="http://localhost/Projectworkits/Account/ModificaPassword.php">Modifica password</a>
                             <a class="dropdown-item text-danger" href="http://localhost/Projectworkits/Account/LogOut.php">Log Out</a>
                         </div>
                     </li> 
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                        <a class="nav-link dropdown-toggle text-warning" href="#" id="navbardrop" data-toggle="dropdown">
                             Ricerca ultimi movimenti
                         </a>
-                        <div class="dropdown-menu">
+                        <div class="dropdown-menu pt-0 pb-0 bg-warning">
 
                             <form class= "form-inline" name= "FormRicercaUltimi" action="" method="get">
-                                <input class="form-control" type="number" id ="intRicerca" name="IntUltimi" placeholder="Trova ultimi X movimenti">
-                                <button class="btn btn-success btn-block " type="submit" onclick="CercaUltimi()">Cerca</button>
+                                <input class="form-control text-light" style="background-color:#dda74f; border:black" type="number" id ="intRicerca" name="IntUltimi" placeholder="Trova ultimi X movimenti">
+                                <button class="btn btn-block text-warning" style="background-color:#070707;" type="submit" onclick="CercaUltimi()">Cerca</button>
                             </form>
                             <?php
                                 if(isset($_GET['IntUltimi'])){
@@ -147,10 +148,10 @@ $conn->close();
                         </div>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                        <a class="nav-link dropdown-toggle text-warning" href="#" id="navbardrop" data-toggle="dropdown">
                             Ricerca per tipologia movimenti
                         </a>
-                        <div class="dropdown-menu">
+                        <div class="dropdown-menu bg-warning">
                             <a class="dropdown-item" href="http://localhost/Projectworkits/Ricerche/RicercaMovimenti2.php?ID=2">Bonifico Entrata</a>
                             <a class="dropdown-item" href="http://localhost/Projectworkits/Ricerche/RicercaMovimenti2.php?ID=3">Versamento Bancomat</a>	
                             <a class="dropdown-item" href="http://localhost/Projectworkits/Ricerche/RicercaMovimenti2.php?ID=4">Bonifico Uscita</a>
@@ -166,20 +167,20 @@ $conn->close();
                         </div>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                        <a class="nav-link dropdown-toggle text-warning" href="#" id="navbardrop" data-toggle="dropdown">
                             Ricerca per data movimento
                         </a>
-                        <div class="dropdown-menu">
+                        <div class="dropdown-menu pt-0 pb-0 bg-warning">
                             <form class="form-inline needs-validation" name= "FormRicercaData" method="get" action="http://localhost/Projectworkits/Ricerche/RicercaMovimenti3.php">
                                 <div class="form-group mx-auto ">
-                                    <label for="da" class="mr-sm-2">Da:  </label>
-                                    <input class="form-control  " type="date" id = "IDda" name="Datada">
+                                    <label for="da" class="float-start">Da:  </label>
+                                    <input class="form-control" style="background-color:#dda74f; border:black" type="date" id = "IDda" name="Datada">
                                 </div> </br>
                                 <div class="form-group mx-auto ">
                                     <label for="a" class="mr-sm-2"> A:</label>
-                                    <input class="form-control " type="date" id = "IDa" name="DataA">
+                                    <input class="form-control" style="background-color:#dda74f; border:black" type="date" id = "IDa" name="DataA">
                                 </div>
-                                <button class="btn btn-success btn-block " type="submit" >Cerca</button>
+                                <button class="btn btn-block text-warning" style="background-color:#070707;" type="submit" >Cerca</button>
 
                                 <?php
                                 
@@ -201,28 +202,30 @@ $conn->close();
                         </div>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                        <a class="nav-link dropdown-toggle text-warning" href="#" id="navbardrop" data-toggle="dropdown">
                             Servizi
                         </a>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#">Ricarica Telefonica</a>
-                            <a class="dropdown-item" href="#">Bonifico</a>
+                        <div class="dropdown-menu bg-warning">
+                            <a class="dropdown-item" href="http://localhost/Projectworkits/Servizi/RicaricaTelefonica.php">Ricarica Telefonica</a>
+                            <a class="dropdown-item" href="http://localhost/Projectworkits/Servizi/bonifico.php">Bonifico</a>
                         </div>
                     </li> 
                 </ul>
             </div>
         </nav>
     </header>
-    <h1>Ricerca Movimenti per Data</h1>
+    <div class = "container text-warning davide">
+        <h1>Ricerca Movimenti per Data</h1>
 
-    <form method="post" action="http://localhost/Projectworkits/Ricerche/RicercaMovimenti3.php?Datada=&DataA=">
-        <label for="dataInizio">Data Inizio</label><input type="date" name="dataInizio">
-        <label for="dataFine">Data Fine</label><input type="date" name="dataFine">
-        <button type="submit">Cerca</button>
-    </form>
-
+        <form method="post" action="http://localhost/Projectworkits/Ricerche/RicercaMovimenti3.php?Datada=&DataA=">
+            <label for="dataInizio">Data Inizio: </label><input class="form text-light" style="background-color:#dda74f; border:black" type="date" name="dataInizio">
+            <label for="dataFine">Data Fine: </label><input class="form text-light" style="background-color:#dda74f; border:black" type="date" name="dataFine">
+            <button class="btn text-warning" type="submit">Cerca</button>
+        </form>
+    </div>
+    <div class="container-fluid text-warning davide">
     <h2>Movimenti</h2>
-    <table>
+    <table class="table table-bordered text-warning">
         <thead>
             <tr>
                 <th>Data</th>
@@ -240,6 +243,6 @@ $conn->close();
             <?php endwhile; ?>
         </tbody>
     </table>
-
+    </div>
 </body>
 </html>
