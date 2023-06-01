@@ -1,0 +1,106 @@
+#errore{
+    display:none;
+    color:#d4c03d;
+}
+#info{
+    display:none;
+    color:#d4c03d;
+}
+#demo{
+    text-align: center;
+    font-size: 10px; 
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-image: url(marmosfondo.jpg);
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.container {
+  background-color: black;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  width: 400px;
+  max-width: 100%;
+  text-align: center;
+  border-radius: 50px 50px 50px 50px;
+  position: absolute;
+  bottom: 50px;
+  
+  
+}
+
+.container h2 {
+  margin-bottom: 30px;
+  color: black;
+}
+
+.container input[type="text"],
+.container input[type="password"],
+.container input[type="email"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 50px;
+  border: 1px solid #ccc;
+  background-color: #d4c03d;
+}
+
+
+
+.container input[type="submit"] {
+  background-color: black;
+  color: #d4c03d;
+  border: none;
+  padding: 12px 0;
+  width: 100%;
+  border-radius: 50px;
+  cursor: pointer;
+}
+
+::placeholder {
+  color: black;
+}
+
+.container input[type="submit"]:hover {
+  background-color: #d4c03d;
+  color: black;
+}
+
+.container p.error-message {
+  color: red;
+  margin-bottom: 20px;
+}
+
+@font-face {
+  font-family: 'Arvo-Bold';
+  src: url('Arvo-Bold.eot');
+  src: local('Arvo-Bold'), url('Arvo-Bold.ttf') format('truetype');
+}
+
+#font {
+  font: 65px 'Arvo-Bold', Georgia, serif;
+  color: #d4c03d;
+  
+
+}
+
+.img {
+  position: absolute;
+  top: 10px
+}
+
+.glow-button:hover {
+  color: rgba(255, 255, 255, 1);
+  box-shadow: 0 5px 15px rgba(207, 117, 6, 0.4);
+}
+#bord{
+  border-color: #d4c03d;
+}
