@@ -48,7 +48,8 @@
             unset($_REQUEST["Login"]);
             unset($_REQUEST["captcha"]);
             unset($_SESSION["emailPerLog"]);
-           
+            header("location: http://localhost/ProjectWorkITS/index.php");
+            exit;
         }
         else
         {
@@ -102,7 +103,7 @@
         </div>
         <div >
         <div>
-            <p><img src="http://localhost/ProjectWorkITS/ProjectWorkITS/ProjectWorkITS/captcha.php" /></p>
+            <p><img src="http://localhost/Projectworkits/Captcha/captcha.php" /></p>
             <label style="color:#a76b09;">CAPTCHA</label><br><input type="text" name="captcha" required style="background-color:#dda74f;"><br><br>
         </div>
         <input name="Invio" id="sub" type="submit" value="Accedi" class="btn btn-default glow-button" style="background-color:#d4c03d;">

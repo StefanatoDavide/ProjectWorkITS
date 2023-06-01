@@ -17,7 +17,7 @@
 
     if (isset($_REQUEST["Invio"])&&($_POST['captcha'] == $_SESSION['captcha']))
     {
-      
+        
         $isok1=true;
         $email =trim(htmlspecialchars($_POST["email"]));
         $password =trim(htmlspecialchars($_POST["password"]));
@@ -72,111 +72,14 @@
 <style>
     #errore{
         display:none;
-        color:#d4c03d;
     }
     #info{
         display:none;
-        color:#d4c03d;
     }
     #demo{
         text-align: center;
         font-size: 10px; 
     }
-    
-    body {
-      font-family: Arial, sans-serif;
-      background-image: url(marmosfondo.jpg);
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
-
-    .container {
-      background-color: black;
-      border-radius: 5px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      padding: 40px;
-      width: 400px;
-      max-width: 100%;
-      text-align: center;
-      border-radius: 50px 50px 50px 50px;
-      position: absolute;
-      bottom: 50px;
-      
-      
-    }
-
-    .container h2 {
-      margin-bottom: 30px;
-      color: black;
-    }
-
-    .container input[type="text"],
-    .container input[type="password"],
-    .container input[type="email"] {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 20px;
-      border-radius: 50px;
-      border: 1px solid #ccc;
-      background-color: #d4c03d;
-    }
-
-
-
-    .container input[type="submit"] {
-      background-color: black;
-      color: #d4c03d;
-      border: none;
-      padding: 12px 0;
-      width: 100%;
-      border-radius: 50px;
-      cursor: pointer;
-    }
-
-    ::placeholder {
-      color: black;
-    }
-
-    .container input[type="submit"]:hover {
-      background-color: #d4c03d;
-      color: black;
-    }
-
-    .container p.error-message {
-      color: red;
-      margin-bottom: 20px;
-    }
-
-    @font-face {
-      font-family: 'AlexBrush-Regular';
-      src: url('AlexBrush-Regular.eot');
-      src: local('AlexBrush-Regular'), url('AlexBrush-Regular.ttf') format('truetype');
-    }
-
-    #font {
-      font: 65px 'AlexBrush-Regular', Georgia, serif;
-      color: #d4c03d;
-      position: relative;
-      bottom: 225spx;
-    }
-
-    .img {
-      position: absolute;
-      top: 10px
-    }
-
-    .glow-button:hover {
-      color: rgba(255, 255, 255, 1);
-      box-shadow: 0 5px 15px rgba(207, 117, 6, 0.4);
-    }
-    #bord{
-      border-color: #d4c03d;
-    }
-  
 </style>
 <script>
     function myFunction(){
@@ -185,30 +88,28 @@
 </script>
 
 </head>
-<body onload="setInterval(myFunction, 30000)">
-<img src="30secmod.gif" width="225" height="225" class="img">
-<div class="container">
+<body onload="setInterval(myFunction, 60000)">
+<div>
     <form action="" method="post" onsubmit="return Controllo()" id="Form">
-    <a id="font">Log-In</a>
         <div>
-            <label id="l1" for="email" style="color:#d4c03d;">Email: </label>
-            <input type="email" name="email" placeholder="henrymiles@gmail.com" autocomplete="off" required id="email">
+            <label id="l1" for="email">Email: </label>
+            <input type="text" name="email" placeholder="henrymiles@gmail.com" autocomplete="off" required id="email">
         </div>
         <div >
-            <label id="l2" for="email" style="color:#d4c03d;">Password: </label>
+            <label id="l2" for="email">Password: </label>
             <input type="password" name="password" placeholder="********" maxlength="20" autocomplete="off" required id="password">
         </div>        
 
         <div>
             <p id="errore"></p>
-            <p id="info" ></p>
+            <p id="info"></p>
         </div>
         <div >
         <div>
-            <p><img src="http://localhost/ProjectWorkITS/ProjectWorkITS/ProjectWorkITS/captcha.php" /></p>
-            <label style="color:#d4c03d;">CAPTCHA <input type="text" name="captcha" required><br><br>
+            <p><img src="http://localhost/ProjectWorkITS/Captcha/captcha.php" /></p>
+            <label>CAPTCHA <input type="text" name="captcha" required><br><br>
         </div>
-        <input name="Invio" id="sub" type="submit" value="Accedi" class="glow-button">
+        <input name="Invio" id="sub" type="submit" value="Accedi">
             <?php
                 if ($_SESSION["login_attempts"] >= 3) {
                    echo("<script>document.getElementById('info').style.display='block'; document.getElementById('info').innerHTML='';document.getElementById('info').innerHTML='Tre tentativi di login errati. Si prega di riprovare tra 1 minuto.';document.getElementById('sub').disabled=true; const myTimeout = setTimeout(enableSubmit, 10000); function enableSubmit(){document.getElementById('sub').disabled=false;} function myStopFunction(){clearTimeout(myTimeout);}</script>");
@@ -316,11 +217,10 @@
         mysqli_close($conn);
         unset($_REQUEST["Invio"]);
 
-      
-    }
-    if($captchaErrato)
-    {
-        echo("<script>document.getElementById('errore').style.display='block';document.getElementById('errore').innerHTML='';document.getElementById('errore').innerHTML='Captcha errato!';</script>");
+        if($captchaErrato)
+        {
+            echo("<script>document.getElementById('errore').style.display='block';document.getElementById('errore').innerHTML='';document.getElementById('errore').innerHTML='Captcha errato!';</script>");
+        }
     }
    
    
