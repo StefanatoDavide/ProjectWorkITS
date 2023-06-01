@@ -28,7 +28,7 @@ $dbname = "projectworkits";
 $conn = new mysqli($servername, $username, $password, $dbname);
 $dataInizio=0;
 $dataFine=0;
-if(($_GET["Datada"]!="")&&($_GET["DataA"]!="")){
+if((isset($_GET['Datada']))&&(isset($_GET['DataA']))){
     $dataInizio =$_GET["Datada"];
     $dataFine = $_GET["DataA"];
     $query= "SELECT m.Data, m.Importo, c.NomeCategoria
