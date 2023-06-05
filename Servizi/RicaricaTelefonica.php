@@ -81,7 +81,7 @@ if(isset($_POST['Invio']) && $_SESSION['Importo']!= "" && $_SESSION['Operatore']
         $stmt2->bind_param("isddis", $userID,$data,$importo,$saldoRestante,$CategoriaMovimentoID,$descrizione);
         $stmt2->execute();
         $result1 = $stmt2->get_result();
-        header("Location: ");
+        
     }
     else{
         $messaggio = "Il tuo saldo è negativo. Mi dispiace ma non è possibile eseguire l'operazione";
@@ -129,6 +129,11 @@ else {
             FormRicercaData.submit();
         }
     </script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
     <title>Ricarica Telefonica</title>
 </head>
 
@@ -271,7 +276,7 @@ else {
 
     <span class="error"><?php echo $_SESSION['ErroreImporto'];?></span> <br>
     <span class="error"><?php echo $_SESSION['ErroreOperatore'];?></span>
-    <p><?php echo $messaggio; ?></p>
+    <p><?php echo($messaggio); ?></p>
 
 </body>
 </html>

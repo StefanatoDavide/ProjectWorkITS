@@ -1,3 +1,34 @@
+<?php
+session_start();
+// Connessione al database 
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "projectworkits";
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+$filename = "InformazioniUtenti.csv";
+$output = fopen('php://memory', 'w');
+$userID=0;
+//Verifica se l'utente è autenticato tramite sessione
+if (!isset($_SESSION['logged_in'])) {
+   // L'utente non è autenticato, reindirizza alla pagina di accesso
+   header('Location: http://localhost/Projectworkits/login_definitivo.php');
+   exit;
+}
+else{
+$email = $_SESSION['logged_in'];
+$saldoQuery = "SELECT tconticorrenti.ContoCorrenteID FROM tmovimenticontocorrente 
+                INNER JOIN tconticorrenti ON tmovimenticontocorrente.ContoCorrenteID = tconticorrenti.ContoCorrenteID
+                WHERE email = ?";
+$stmt1 = $conn->prepare($saldoQuery);
+$stmt1->bind_param("s", $email);
+$stmt1->execute();
+$result1 = $stmt1->get_result();
+$userID= $result1->fetch_assoc()['ContoCorrenteID'];
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,40 +41,17 @@
  
     
 <?php
-// $userID=0;
-// //Verifica se l'utente è autenticato tramite sessione
-// if (!isset($_SESSION['logged_in'])) {
-//    // L'utente non è autenticato, reindirizza alla pagina di accesso
-//    header('Location: login.php');
-//    exit;ì
-// }
-// else{
-// $email = $_SESSION['email'];
-// $saldoQuery = "SELECT ContoCorrenteID FROM tmovimenticontocorrente WHERE email = ?";
-// $stmt1 = $conn->prepare($saldoQuery);
-// $stmt1->bind_param("s", $email);
-// $stmt1->execute();
-// $result1 = $stmt1->get_result();
-// $userID= $result1->fetch_assoc()['ContoCorrenteID'];
-// }
+
 
 // Start the output buffer.
 ob_start();
 
-// Connessione al database 
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "projectworkits1";
 
-$filename = "InformazioniUtenti.csv";
-$output = fopen('php://memory', 'w');
 
 // Ottieni l'ID dell'utente loggato dalla sessione
 //$userID = $_SESSION['MovimentoID'];
 
-$userID = 1;
-$conn = new mysqli($servername, $username, $password, $dbname);
+
 $saldoQuery = "SELECT * FROM tmovimenticontocorrente WHERE ContoCorrenteID = ?";
 $stmt1 = $conn->prepare($saldoQuery);
 $stmt1->bind_param("i", $userID);

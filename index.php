@@ -216,6 +216,10 @@
                 ?>
             </tbody>
         </table>
+        <div class="inline">
+            <a class = "text-warning" href= "EsportazioneExcel.php">Esporta in excel |</a>
+            <a class = "text-warning" href= "EsportazioneCsv.php">| Esporta in csv</a>
+        <div class="inline">
     </div>
 </body>
 </html>

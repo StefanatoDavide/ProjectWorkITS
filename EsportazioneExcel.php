@@ -1,16 +1,23 @@
 <?php 
 
+session_start();
+if(!isset($_SESSION["logged_in"]))
+{
+    header("location: http://localhost/Projectworkits/login_definitivo.php");
+    exit;
+}
 
 $dbhost = "localhost";
 $username = "root";
 $password = "";
-$dbname = "projectworkits1";
+$dbname = "projectworkits";
 $conn = new mysqli($dbhost, $username, $password, $dbname);
 
-$userID = 1;
-$saldoQuery = "SELECT * FROM tmovimenticontocorrente WHERE ContoCorrenteID = ?";
+$mail = $_SESSION["logged_in"];
+$saldoQuery = "SELECT * FROM tmovimenticontocorrente 
+                INNER JOIN tconticorrenti ON tmovimenticontocorrente.ContoCorrenteID = tconticorrenti.ContoCorrenteID 
+                WHERE email = '$mail'";
 $stmt1 = $conn->prepare($saldoQuery);
-$stmt1->bind_param("i", $userID);
 $stmt1->execute();
 $result = $stmt1->get_result();
 $tasks = array();

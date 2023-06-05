@@ -43,6 +43,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
     <title>Pagina bonifico</title>
     <script>
         function isOnlyDigits(string) {
@@ -239,7 +244,7 @@
                     $html = str_replace("{CODICE}",$codice, $html);
                     
                     
-                    if(!mail($email,$object,$html,$head))
+                    if(!mail($mail,$object,$html,$head))
                     {
                         echo("<script>document.getElementById('errore').style.display='block';document.getElementById('errore').innerHTML='';document.getElementById('errore').innerHTML='Si è verificato un errore durante l'invio della mail. Si prega di riprovare.';</script>");
                     }
@@ -308,7 +313,7 @@
                     $descrizioneEstesa="Bonifico disposto da $nomeMittente $cognomeMittente";
                     $strInsert->bind_param("isiiis",$idDest,$data,$importo,$saldoDestAggiornato,$categoriaMovimento,$descrizioneEstesa);
                     $strInsert->execute();
-                    $result = $strSQL->get_result();
+                    $result = $strInsert->get_result();
                     $strInsert->close();
                     echo("<script>document.getElementById('info').style.display='block';document.getElementById('info').innerHTML='';document.getElementById('info').innerHTML='Bonifico effettuato con successo.';</script>");
                 }
