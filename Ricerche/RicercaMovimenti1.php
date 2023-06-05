@@ -1,3 +1,14 @@
+<?php
+session_start();
+// Connessione al database 
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "projectworkits";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -58,7 +69,7 @@
                         </a>
                         <div class="dropdown-menu bg-warning">
                             <a class="dropdown-item" href="http://localhost/Projectworkits/Index.php">Informazioni account</a>
-                            <a class="dropdown-item" href="http://localhost/Projectworkits/Account/ModificaPassword.php">Modifica password</a>
+                            <a class="dropdown-item" href="http://localhost/Projectworkits/Account/modificapassword.php">Modifica password</a>
                             <a class="dropdown-item text-danger" href="http://localhost/Projectworkits/Account/LogOut.php">Log Out</a>
                         </div>
                     </li> 
@@ -152,34 +163,30 @@
             </div>
         </nav>
     </header>
+
 <?php
-// session_start();
-// $userID=0;
-// //Verifica se l'utente è autenticato tramite sessione
-// if (!isset($_SESSION['logged_in'])) {
-//    // L'utente non è autenticato, reindirizza alla pagina di accesso
-//    header('Location: login.php');
-//    exit;
-// }
-// else{
-// $email = $_SESSION['email'];
-// $saldoQuery = "SELECT ContoCorrenteID FROM tmovimenticontocorrente WHERE email = ?";
-// $stmt1 = $conn->prepare($saldoQuery);
-// $stmt1->bind_param("s", $email);
-// $stmt1->execute();
-// $result1 = $stmt1->get_result();
-// $userID= $result1->fetch_assoc()['ContoCorrenteID'];
-// }
+
+$userID=0;
+//Verifica se l'utente è autenticato tramite sessione
+if (!isset($_SESSION['logged_in'])) {
+   // L'utente non è autenticato, reindirizza alla pagina di accesso
+   header('Location: http://localhost/Projectworkits/login_definitivo.php');
+   exit;
+}
+else{
+$email = $_SESSION['logged_in'];
+$saldoQuery = "SELECT tconticorrenti.ContoCorrenteID FROM tmovimenticontocorrente 
+                INNER JOIN tconticorrenti ON tmovimenticontocorrente.ContoCorrenteID = tconticorrenti.ContoCorrenteID
+                WHERE email = ?";
+$stmt1 = $conn->prepare($saldoQuery);
+$stmt1->bind_param("s", $email);
+$stmt1->execute();
+$result1 = $stmt1->get_result();
+$userID= $result1->fetch_assoc()['ContoCorrenteID'];
+}
 
 
-$userID=2;
-// Connessione al database 
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "projectworkits";
 
-$conn = new mysqli($servername, $username, $password, $dbname);
 
 $numeroMovimenti=0;
 // Ottieni il numero di movimenti da visualizzare

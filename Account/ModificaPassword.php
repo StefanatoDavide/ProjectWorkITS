@@ -2,9 +2,9 @@
 session_start();
     $isok=false;
     $codiceErrato=false;
-    if(!isset($_SESSION["log_in"]))
+    if(!isset($_SESSION["logged_in"]))
     {
-        header("location: login.php");
+        header("location: login_definitivo.php");
         exit;
     }
     if(isset($_REQUEST["Invio"]))
@@ -106,7 +106,7 @@ session_start();
         $conn = mysqli_connect("localhost", "root", "", "projectworkits");
         $queryUpdate=$conn->prepare("UPDATE tconticorrenti SET password=? WHERE email=?");
         //$mail="tomas.arnaldi@allievi.itsdigitalacademy.com";
-        $mail=$_SESSION["log_in"];
+        $mail=$_SESSION["logged_in"];
         $queryUpdate->bind_param("ss",$hash,$mail);
 
         if($queryUpdate->execute())

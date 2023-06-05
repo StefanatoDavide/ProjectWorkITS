@@ -1,3 +1,11 @@
+<?php
+    session_start();
+    if(!isset($_SESSION["logged_in"]))
+    {
+        header("location: http://localhost/Projectworkits/login_definitivo.php");
+        exit;
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,7 +17,7 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-    <title>Login</title>
+    <title>Area Riservata</title>
     
     <script>
         function isOnlyDigits(string) {
@@ -58,7 +66,7 @@
                         </a>
                         <div class="dropdown-menu bg-warning">
                             <a class="dropdown-item" href="http://localhost/Projectworkits/Index.php">Informazioni account</a>
-                            <a class="dropdown-item" href="http://localhost/Projectworkits/Account/ModificaPassword.php">Modifica password</a>
+                            <a class="dropdown-item" href="http://localhost/Projectworkits/Account/modificapassword.php">Modifica password</a>
                             <a class="dropdown-item text-danger" href="http://localhost/Projectworkits/Account/LogOut.php">Log Out</a>
                         </div>
                     </li> 
@@ -155,12 +163,15 @@
 
     <div class="container text-warning davide">
         <?php
+            $mail = $_SESSION["logged_in"];
+
             $conn=mysqli_connect("localhost", "root", "", "projectworkits");
-            $strSQL="SELECT * FROM `tconticorrenti` WHERE `ContoCorrenteID`=1";
+            $strSQL="SELECT * FROM `tconticorrenti` WHERE `email`= '$mail'";
             $query=mysqli_query($conn, $strSQL);
             $row = mysqli_fetch_assoc($query);
 
-            $strSQL2="SELECT * FROM `tmovimenticontocorrente` WHERE `ContoCorrenteID`=1 ORDER BY `MovimentoID` DESC LIMIT 1";
+            $strSQL2="SELECT * FROM `tmovimenticontocorrente` INNER JOIN tconticorrenti ON tmovimenticontocorrente.ContoCorrenteID = tconticorrenti.ContoCorrenteID
+            WHERE  tconticorrenti.email = '$mail' ORDER BY `MovimentoID` DESC LIMIT 1";
             $query2=mysqli_query($conn, $strSQL2);
             $row2 = mysqli_fetch_assoc($query2);
 
@@ -185,7 +196,10 @@
             </thead>
             <tbody>
                 <?php
-                    $strSQL="SELECT * FROM `tmovimenticontocorrente` WHERE `ContoCorrenteID` = 1 ORDER BY `MovimentoID` DESC LIMIT 5";
+                    $strSQL="SELECT * FROM `tmovimenticontocorrente` 
+                            INNER JOIN tconticorrenti ON tmovimenticontocorrente.ContoCorrenteID = tconticorrenti.ContoCorrenteID
+                            WHERE `email` = '$mail' 
+                            ORDER BY `MovimentoID` DESC LIMIT 5";
                     $query=mysqli_query($conn, $strSQL);
                     while ($row = mysqli_fetch_assoc($query)) 
                     {
