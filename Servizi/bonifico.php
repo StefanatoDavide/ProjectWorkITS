@@ -1,80 +1,54 @@
 <?php
-session_start();
-$userID=1;
-// Connessione al database 
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "projectworkits";
+    session_start();
+    $isok=false;
+    $isok2=false;
+    $codiceErrato=false;
+    if(!isset($_SESSION["logged_in"]))
+    {
+        header("location: http://localhost/Projectworkits/login_definitivo.php");
+        exit;
+    }
 
-$conn = new mysqli($servername, $username, $password, $dbname);
-$dataInizio=0;
-$dataFine=0;
-$userID=0;
-//Verifica se l'utente è autenticato tramite sessione
-if (!isset($_SESSION['logged_in'])) {
-   // L'utente non è autenticato, reindirizza alla pagina di accesso
-   header('Location: http://localhost/Projectworkits/login_definitivo.php');
-   exit;
-}
-else{
-$email = $_SESSION['logged_in'];
-$saldoQuery = "SELECT tconticorrenti.ContoCorrenteID FROM tmovimenticontocorrente 
-                INNER JOIN tconticorrenti ON tmovimenticontocorrente.ContoCorrenteID = tconticorrenti.ContoCorrenteID
-                WHERE email = ?";
-$stmt1 = $conn->prepare($saldoQuery);
-$stmt1->bind_param("s", $email);
-$stmt1->execute();
-$result1 = $stmt1->get_result();
-$userID= $result1->fetch_assoc()['ContoCorrenteID'];
-}
+    if(isset($_REQUEST["Invio"]))
+    {
+        $isok=true;
+        $_SESSION["ibanDest"]=$_REQUEST["ibanDest"];
+        $importo=floatval($_REQUEST["importo"]);
+        $_SESSION["importo"]=$importo;
+        srand((double)microtime()*1000000);
+        $codice=rand(1001,9999); 
+        $_SESSION["codice"]=$codice;
+        $mail=$_SESSION["logged_in"];
+        
+    }
 
+    if(isset($_REQUEST["Conferma"]))
+    {   
+            if($_REQUEST["codiceConferma"]==$_SESSION["codice"])
+            {
+                $isok2=true;
 
-if((isset($_GET['Datada']))&&(isset($_GET['DataA']))){
-    $dataInizio =$_GET["Datada"];
-    $dataFine = $_GET["DataA"];
-    $query= "SELECT m.Data, m.Importo, c.NomeCategoria
-    FROM tmovimenticontocorrente m
-    INNER JOIN tcategoriemovimenti c ON m.CategoriaMovimentoID = c.CategoriaMovimentoID
-    WHERE m.ContoCorrenteID = ? AND m.Data BETWEEN ? AND ?
-    ORDER BY m.Data DESC";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param("iss", $userID,$dataInizio,$dataFine);
-    $stmt->execute();
-    $result = $stmt->get_result();
-}
-
-else{
-    
-    $dataInizio = $_POST["dataInizio"];
-    $dataFine = $_POST["dataFine"];
-    // Esegui la query per ottenere gli ultimi movimenti e il saldo finale
-    $query= "SELECT m.Data, m.Importo, c.NomeCategoria
-            FROM tmovimenticontocorrente m
-            INNER JOIN tcategoriemovimenti c ON m.CategoriaMovimentoID = c.CategoriaMovimentoID
-            WHERE m.ContoCorrenteID = ? AND m.Data BETWEEN ? AND ?
-            ORDER BY m.Data DESC";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param("iss", $userID,$dataInizio,$dataFine);
-    $stmt->execute();
-    $result = $stmt->get_result();
-}
+            }
+            else
+            {
+                $codiceErrato=true;
+            }
+    }
 
 
-// Chiudi la connessione al database
-$conn->close();
 ?>
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <link rel="stylesheet" href="http://localhost/Projectworkits/style.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-    <title>Login</title>
-    
+    <title>Pagina bonifico</title>
     <script>
         function isOnlyDigits(string) {
             for (let i = 0; i < string.length; i++) {
@@ -217,35 +191,152 @@ $conn->close();
         </nav>
     </header>
 
-    <div class = "container text-warning davide">
-        <h1>Ricerca Movimenti per Data</h1>
+    <form action="" method="post">
+        <div>
+            <h4>Bonifico</h4>
+        </div>
+        <div>
+            <label for="ibanDest">Inserisci conto corrente del destinatario:</label>
+            <input type="text" id="ibanDest" name="ibanDest" autocomplete="off" placeholder="IT 99 C 12345 67890 123456789012" required>
+        </div>
+        <div>
+            <label for="importo">Inserisci importo del bonifico:</label>
+            <input type="text" id="importo" name="importo" autocomplete="off" required>
+        </div>
+        <div>
+            <p id="errore"></p>
+            <p id="info"></p>
+        </div>
+        <div>
+            <input type="submit" id="Invio" name="Invio" value="Effettua bonifico">
+        </div>    
+    </form>
+    <?php
+        function attivaSubmit2()
+        {
+            echo('<form method="post" action="">');
+            echo("<div><label for='lCodice'>Inserisci il codice ricevuto via mail</label>");
+            echo("<input type='text' name='codiceConferma' id='lCodice' autocomplete='off' placeholder='codice' required></div><br>");
+            echo("<div><input type='submit' name='Conferma' value='Conferma'></div>");
+            echo("</form>");
+            
+        }
 
-        <form method="post" action="http://localhost/Projectworkits/Ricerche/RicercaMovimenti3.php?Datada=&DataA=">
-            <label for="dataInizio">Data Inizio: </label><input class="form text-light" style="background-color:#dda74f; border:black" type="date" name="dataInizio">
-            <label for="dataFine">Data Fine: </label><input class="form text-light" style="background-color:#dda74f; border:black" type="date" name="dataFine">
-            <button class="btn text-warning" type="submit">Cerca</button>
-        </form>
-    </div>
-    <div class="container-fluid text-warning davide">
-    <h2>Movimenti</h2>
-    <table class="table table-bordered text-warning">
-        <thead>
-            <tr>
-                <th>Data</th>
-                <th>Importo</th>
-                <th>Nome Categoria</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php while ($row = $result->fetch_assoc()) : ?>
-                <tr>
-                    <td><?php echo $row['Data']; ?></td>
-                    <td><?php echo $row['Importo']; ?></td>
-                    <td><?php echo $row['NomeCategoria']; ?></td>
-                </tr>
-            <?php endwhile; ?>
-        </tbody>
-    </table>
-    </div>
+        if($codiceErrato)
+        {
+            attivaSubmit2();
+            echo("<script>document.getElementById('errore').style.display='block'; document.getElementById('errore').innerHTML='';document.getElementById('errore').innerHTML='Codice di conferma errato';</script>");
+            
+        }
+
+
+    ?>
+    <?php
+        if($isok)
+        {
+
+                    //Invio mail
+                    $object="Conferma bonifico";
+                    $header="From: zion.holdingcompanyita@gmail.com";
+                    $head = "MIME-Version: 1.0\r\n";
+                    $head .= "Content-type: text/html; charset=utf-8";
+                    $html=file_get_contents("email_template3.html");
+                    $html = str_replace("{CODICE}",$codice, $html);
+                    
+                    
+                    if(!mail($mail,$object,$html,$head))
+                    {
+                        echo("<script>document.getElementById('errore').style.display='block';document.getElementById('errore').innerHTML='';document.getElementById('errore').innerHTML='Si è verificato un errore durante l'invio della mail. Si prega di riprovare.';</script>");
+                    }
+                    else
+                    {
+                        echo("<script>document.getElementById('info').style.display='block';document.getElementById('info').innerHTML='';document.getElementById('info').innerHTML='Email di conferma inviata.';</script>");
+                        attivaSubmit2();
+                    }
+        }
+        if($isok2)
+        {
+            $ibanDest=$_SESSION["ibanDest"];
+            $importo=$_SESSION["importo"];
+            $conn=mysqli_connect("localhost","root", "","projectworkits");
+            $strSQL = $conn->prepare("SELECT * FROM tconticorrenti WHERE IBAN=?");
+            $strSQL->bind_param("s",$ibanDest);
+            $strSQL->execute();
+            $result = $strSQL->get_result();
+            
+            if (mysqli_num_rows($result)>0)
+            {
+                $row = $result->fetch_assoc();
+                $idDest=intval($row["ContoCorrenteID"]);
+                $nomeDest=$row["NomeTitolare"];
+                $cognomeDest=$row["CognomeTitolare"];
+
+
+                $strSQL = $conn->prepare("SELECT * FROM tconticorrenti WHERE email=?");
+                $mail=$_SESSION["logged_in"];
+                $strSQL->bind_param("s",$mail);
+                $strSQL->execute();
+                $result = $strSQL->get_result();
+                $row = $result->fetch_assoc();
+                $contoIdMittente=intval($row["ContoCorrenteID"]);
+                $nomeMittente=$row["NomeTitolare"];
+                $cognomeMittente=$row["CognomeTitolare"];
+
+                $strSQL = $conn->prepare("SELECT * FROM tmovimenticontocorrente WHERE ContoCorrenteID=? ORDER BY MovimentoID DESC LIMIT 1");
+                $strSQL->bind_param("s",$contoIdMittente);
+                $strSQL->execute();
+                $result = $strSQL->get_result();
+                $row = $result->fetch_assoc();
+                $saldoCorrente=floatval($row["Saldo"]);
+                $saldoAggiornato=$saldoCorrente-$importo;
+                if($saldoAggiornato>0)
+                {
+                    //saldo utente destinatario
+                    $strSQL = $conn->prepare("SELECT * FROM tmovimenticontocorrente WHERE ContoCorrenteID=? ORDER BY MovimentoID DESC LIMIT 1");
+                    $strSQL->bind_param("s",$idDest);
+                    $strSQL->execute();
+                    $result = $strSQL->get_result();
+                    $row = $result->fetch_assoc();
+                    $saldoCorrenteDest=floatval($row["Saldo"]);
+                    $strInsert = $conn->prepare("INSERT INTO tmovimenticontocorrente (ContoCorrenteID,Data,Importo,Saldo,CategoriaMovimentoID,DescrizioneEstesa) VALUES (?,?,?,?,?,?) ");
+                    $data=date('Y-m-d');
+                    $importo=-$importo;
+                    $categoriaMovimento=4;
+                    $descrizioneEstesa="Bonifico a favore di $nomeDest $cognomeDest";
+                    $strInsert->bind_param("isiiis",$contoIdMittente,$data,$importo,$saldoAggiornato,$categoriaMovimento,$descrizioneEstesa);
+                    $strInsert->execute();
+                    
+                    $strInsert = $conn->prepare("INSERT INTO tmovimenticontocorrente (ContoCorrenteID,Data,Importo,Saldo,CategoriaMovimentoID,DescrizioneEstesa) VALUES (?,?,?,?,?,?) ");
+                    $importo=-$importo;
+                    $saldoDestAggiornato=$saldoCorrenteDest+$importo;
+                    $categoriaMovimento=2;
+                    $descrizioneEstesa="Bonifico disposto da $nomeMittente $cognomeMittente";
+                    $strInsert->bind_param("isiiis",$idDest,$data,$importo,$saldoDestAggiornato,$categoriaMovimento,$descrizioneEstesa);
+                    $strInsert->execute();
+                    $result = $strInsert->get_result();
+                    $strInsert->close();
+                    echo("<script>document.getElementById('info').style.display='block';document.getElementById('info').innerHTML='';document.getElementById('info').innerHTML='Bonifico effettuato con successo.';</script>");
+                }
+                else
+                {
+                     echo("<script>document.getElementById('info').style.display='block';document.getElementById('info').innerHTML='';document.getElementById('info').innerHTML='Importo superiore al saldo disponibile nel conto.';</script>");
+                }
+                    
+                
+            }
+            else
+            {
+                echo("<script>document.getElementById('info').style.display='block';document.getElementById('info').innerHTML='';document.getElementById('info').innerHTML='IBAN inserito non valido.';</script>");
+                
+            }
+            $strSQL->close();
+            unset( $_SESSION["codice"]);
+            unset($_SESSION["importo"]);
+            unset($_SESSION["ibanDest"]);
+            mysqli_close($conn);
+        }
+         
+
+    ?>
 </body>
 </html>

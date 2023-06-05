@@ -7,6 +7,19 @@
     <title>Document</title>
 </head>
 <body>
-    
+    <?php
+    session_start();
+    if(!isset($_SESSION["logged_in"]))
+    {
+        header("location: http://localhost/Projectworkits/login_definitivo.php");
+        exit;
+    } else {
+        session_destroy();
+        header("location: http://localhost/Projectworkits/login_definitivo.php");
+        exit;
+    }
+
+
+    ?>
 </body>
 </html>

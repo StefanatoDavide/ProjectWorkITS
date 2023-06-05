@@ -38,7 +38,7 @@
                 $IBAN="IT".$con_num.substr($acc,0,17);
                 return $IBAN;
             }*/
-            $IBAN='IT99C1234567890123456789012';
+            $IBAN='IT82F0300203280898883788279';
             
             $conn=mysqli_connect("localhost","root", "","projectworkits");
             $queryUpdate=$conn->prepare("UPDATE tconticorrenti SET RegistrazioneConfermata=?, IBAN= ? WHERE Token=?");

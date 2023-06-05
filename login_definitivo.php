@@ -95,9 +95,9 @@
         <div class="form-group w-75 centrare">
             <label id="l2" for="email" style="color:#a76b09;">Password: </label>
             <input type="password" name="password" placeholder="********" maxlength="20" autocomplete="off" required id="password" class="form-control" style="background-color:#dda74f;">
+            <a class ="text-warning" href ="http://localhost/Projectworkits/passworddimenticata.php">Password Dimenticata?</a>
         </div>        
-       <br>
-        
+        <br>
         <div>
             <div id="errore" class="alert alert-danger" role="alert"></div>
             <div id="info" class="alert alert-warning" role="alert"></div>

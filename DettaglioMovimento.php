@@ -1,3 +1,11 @@
+<?php
+    session_start();
+    if(!isset($_SESSION["logged_in"]))
+    {
+        header("location: login_definitivo.php");
+        exit;
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -156,9 +164,13 @@
     <h2 >Dettagli transazione</h2></br>
         <table class="table table-bordered ">
         <?php
+            $mail = $_SESSION["logged_in"];
             $movimento = $_GET["ID"];
             $conn=mysqli_connect("localhost", "root", "", "projectworkits");
-            $strSQL="SELECT * FROM `tmovimenticontocorrente` INNER JOIN tcategoriemovimenti ON tmovimenticontocorrente.CategoriaMovimentoID=tcategoriemovimenti.CategoriaMovimentoID WHERE `ContoCorrenteID`=1 AND MovimentoID ='$movimento'";
+            $strSQL="SELECT * FROM `tmovimenticontocorrente` 
+                    INNER JOIN tcategoriemovimenti ON (tmovimenticontocorrente.CategoriaMovimentoID=tcategoriemovimenti.CategoriaMovimentoID)
+                    INNER JOIN tconticorrenti ON (tmovimenticontocorrente.ContoCorrenteID=tconticorrenti.ContoCorrenteID) 
+                    WHERE `email`='$mail' AND MovimentoID ='$movimento'";
             $query=mysqli_query($conn, $strSQL);
             $row = mysqli_fetch_assoc($query);
 
